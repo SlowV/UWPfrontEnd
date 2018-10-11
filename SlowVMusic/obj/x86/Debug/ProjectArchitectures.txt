@@ -1,0 +1,1 @@
+d:\document\visual studio 2017\Projects\SlowVMusic\SlowVMusic\SlowVMusic.csproj;x86

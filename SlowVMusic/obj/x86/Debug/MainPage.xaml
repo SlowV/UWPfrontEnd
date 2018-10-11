@@ -1,0 +1,83 @@
+﻿<Page x:ConnectionId='1'
+    x:Class="SlowVMusic.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:SlowVMusic"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+
+    <Grid>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger x:ConnectionId='2'                                                                   />
+                    </VisualState.StateTriggers>
+
+                    <VisualState.Setters>
+                        <Setter Target="NavView.PaneDisplayMode" Value="Top"/>
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+        <NavigationView x:ConnectionId='3' x:Name="nvTopLevelNav"
+                                             
+                Margin="0,12,0,0"
+                                                                 
+                                                       
+                IsTabStop="False">
+            <NavigationView.MenuItems>
+                <NavigationViewItem Icon="Home" Tag="Home_Page">
+                    <TextBlock Tag="Nav_Home">Home</TextBlock>
+                </NavigationViewItem>
+                <NavigationViewItem Icon="Shop" Tag="Shop_Page">
+                    <TextBlock Tag="Nav_Shop">Shop</TextBlock>
+                </NavigationViewItem>
+                <NavigationViewItem Tag="Cart_Page">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph=""/>
+                    </NavigationViewItem.Icon>
+                    <TextBlock Tag="Nav_ShopCart">Shopping Cart</TextBlock>
+                </NavigationViewItem>
+                <NavigationViewItem Icon="Message" Tag="Message_Page">
+                    <TextBlock Tag="Nav_Message">Message</TextBlock>
+                </NavigationViewItem>
+                <NavigationViewItem Icon="Print" Tag="Print_Page">
+                    <TextBlock Tag="Nav_Print">Print</TextBlock>
+                </NavigationViewItem>
+            </NavigationView.MenuItems>
+            
+            <NavigationView.AutoSuggestBox>
+                <AutoSuggestBox x:ConnectionId='4' x:Name="ASB" QueryIcon="Find"/>
+            </NavigationView.AutoSuggestBox>
+
+            <NavigationView.HeaderTemplate>
+                <DataTemplate>
+                    <Grid Margin="24,10,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Style="{StaticResource TitleTextBlockStyle}"
+                           FontSize="28"
+                           VerticalAlignment="Center"
+                           Text="SlowV Music"/>
+                        <CommandBar Grid.Column="1"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Top"
+                            DefaultLabelPosition="Right"
+                            Background="{ThemeResource SystemControlBackgroundAltHighBrush}" Margin="0,0,10,0">
+                            <AppBarButton Label="Upload" Icon="Upload"/>
+                            <AppBarButton x:ConnectionId='6' Label="Đăng nhập" Icon="Contact"                  />
+                        </CommandBar>
+                    </Grid>
+                </DataTemplate>
+            </NavigationView.HeaderTemplate>
+            <Frame x:ConnectionId='7' x:Name="contentFrame"/>
+        </NavigationView>
+    </Grid>
+</Page>
+
