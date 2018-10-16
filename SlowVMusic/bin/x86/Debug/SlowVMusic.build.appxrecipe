@@ -582,9 +582,6 @@
     <AppxPackagedFile Include="d:\document\visual studio 2017\Projects\SlowVMusic\SlowVMusic\bin\x86\Debug\Views\HomePage.xbf">
       <PackagePath>Views\HomePage.xbf</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="d:\document\visual studio 2017\Projects\SlowVMusic\SlowVMusic\bin\x86\Debug\Views\PageLogin.xbf">
-      <PackagePath>Views\PageLogin.xbf</PackagePath>
-    </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\UnionMetadata\10.0.17134.0\Windows.winmd">
       <PackagePath>WinMetadata\Windows.winmd</PackagePath>
     </AppxPackagedFile>

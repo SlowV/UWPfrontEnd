@@ -19,6 +19,11 @@ namespace SlowVMusic.Entity
         private string _birthday;
         private string _email;
         private string _password;
+        private string _salt;
+        private string _createdAt;
+        private string _updatedAt;
+        private string _status;
+
 
         public string firstName { get => _firstName; set => _firstName = value; }
         public string lastName { get => _lastName; set => _lastName = value; }
@@ -31,5 +36,9 @@ namespace SlowVMusic.Entity
         public string email { get => _email; set => _email = value; }
         public string password { get => _password; set => _password = value; }
         public long id { get => _id; set => _id = value; }
+        public string salt { get => _salt; set => _salt = value; }
+        public string createdAt { get => _createdAt; set => _createdAt = value; }
+        public string updatedAt { get => _updatedAt; set => _updatedAt = value; }
+        public string status { get => _status; set => _status = value; }
     }
 }

@@ -6,7 +6,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" 
+                         >
 
 
     <Grid>
@@ -31,22 +32,19 @@
                 IsTabStop="False">
             <NavigationView.MenuItems>
                 <NavigationViewItem Icon="Home" Tag="Home_Page">
-                    <TextBlock Tag="Nav_Home">Home</TextBlock>
+                    <TextBlock Tag="Nav_Home">Trang chủ</TextBlock>
                 </NavigationViewItem>
-                <NavigationViewItem Icon="Shop" Tag="Shop_Page">
-                    <TextBlock Tag="Nav_Shop">Shop</TextBlock>
+                <NavigationViewItem Icon="Shop" Tag="Bxh_Page">
+                    <TextBlock Tag="Nav_Bxh">Bảng xếp hạng</TextBlock>
                 </NavigationViewItem>
-                <NavigationViewItem Tag="Cart_Page">
-                    <NavigationViewItem.Icon>
-                        <FontIcon Glyph=""/>
-                    </NavigationViewItem.Icon>
-                    <TextBlock Tag="Nav_ShopCart">Shopping Cart</TextBlock>
+                <NavigationViewItem  Icon="Audio" Tag="MusicCPOP_Page">
+                    <TextBlock Tag="Nav_MusicCPOP">Nhạc Trung</TextBlock>
                 </NavigationViewItem>
-                <NavigationViewItem Icon="Message" Tag="Message_Page">
-                    <TextBlock Tag="Nav_Message">Message</TextBlock>
+                <NavigationViewItem Icon="Audio" Tag="MusicUK_Page">
+                    <TextBlock Tag="Nav_MusicUK">Nhạc Âu Mỹ</TextBlock>
                 </NavigationViewItem>
-                <NavigationViewItem Icon="Print" Tag="Print_Page">
-                    <TextBlock Tag="Nav_Print">Print</TextBlock>
+                <NavigationViewItem Icon="Audio" Tag="MusicVPOP_Page">
+                    <TextBlock Tag="Nav_MusicVPOP">Nhạc Viêt</TextBlock>
                 </NavigationViewItem>
             </NavigationView.MenuItems>
             
@@ -54,29 +52,36 @@
                 <AutoSuggestBox x:ConnectionId='4' x:Name="ASB" QueryIcon="Find"/>
             </NavigationView.AutoSuggestBox>
 
-            <NavigationView.HeaderTemplate>
-                <DataTemplate>
-                    <Grid Margin="24,10,0,0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Style="{StaticResource TitleTextBlockStyle}"
+            <NavigationView.Header>
+                <Grid Margin="24,10,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Style="{StaticResource TitleTextBlockStyle}"
                            FontSize="28"
                            VerticalAlignment="Center"
                            Text="SlowV Music"/>
-                        <CommandBar Grid.Column="1"
+                    <CommandBar x:ConnectionId='5' Grid.Column="1"
                             HorizontalAlignment="Right"
                             VerticalAlignment="Top"
                             DefaultLabelPosition="Right"
-                            Background="{ThemeResource SystemControlBackgroundAltHighBrush}" Margin="0,0,10,0">
-                            <AppBarButton Label="Upload" Icon="Upload"/>
-                            <AppBarButton x:ConnectionId='6' Label="Đăng nhập" Icon="Contact"                  />
-                        </CommandBar>
-                    </Grid>
-                </DataTemplate>
-            </NavigationView.HeaderTemplate>
-            <Frame x:ConnectionId='7' x:Name="contentFrame"/>
+                            Background="{ThemeResource SystemControlBackgroundAltHighBrush}" 
+                            Margin="0,0,10,0" 
+                            x:Name="MyCommandBar">
+                        <AppBarButton x:ConnectionId='6' x:Name="ShowLoginButton" Label="Đăng nhập" Icon="Contact"                   />
+                        <AppBarButton x:ConnectionId='7' x:Name="ShowUserInfo" Icon="Contact" Label="Thông tin">
+                            <AppBarButton.Flyout>
+                                <MenuFlyout>
+                                    <MenuFlyoutItem x:ConnectionId='8' x:Name="InfoUser" Text="SlowV" />
+                                    <MenuFlyoutItem x:ConnectionId='9' x:Name="Logout" Text="Đăng xuất"                   />
+                                </MenuFlyout>
+                            </AppBarButton.Flyout>
+                        </AppBarButton>
+                    </CommandBar>
+                </Grid>
+            </NavigationView.Header>
+            <Frame x:ConnectionId='10' x:Name="contentFrame"/>
         </NavigationView>
     </Grid>
 </Page>

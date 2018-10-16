@@ -98,16 +98,16 @@
     <Compile Include="Entity\ErrorResponse.cs" />
     <Compile Include="Entity\Member.cs" />
     <Compile Include="Entity\Song.cs" />
+    <Compile Include="Entity\TokenResponse.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Model\DataAccess.cs" />
+    <Compile Include="Model\SongModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\APIHandle.cs" />
     <Compile Include="Views\HomePage.xaml.cs">
       <DependentUpon>HomePage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\PageLogin.xaml.cs">
-      <DependentUpon>PageLogin.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -137,10 +137,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\HomePage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\PageLogin.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

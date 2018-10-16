@@ -213,31 +213,29 @@ namespace SlowVMusic.SlowVMusic_XamlTypeInfo
 
         private void InitTypeTables()
         {
-            _typeNameTable = new string[11];
+            _typeNameTable = new string[10];
             _typeNameTable[0] = "SlowVMusic.MainPage";
             _typeNameTable[1] = "Windows.UI.Xaml.Controls.Page";
             _typeNameTable[2] = "Windows.UI.Xaml.Controls.UserControl";
             _typeNameTable[3] = "SlowVMusic.Views.HomePage";
-            _typeNameTable[4] = "SlowVMusic.Views.PageLogin";
-            _typeNameTable[5] = "Microsoft.UI.Xaml.Controls.TreeViewNode";
-            _typeNameTable[6] = "Windows.UI.Xaml.DependencyObject";
-            _typeNameTable[7] = "Boolean";
-            _typeNameTable[8] = "Object";
-            _typeNameTable[9] = "System.Collections.Generic.IList`1<Microsoft.UI.Xaml.Controls.TreeViewNode>";
-            _typeNameTable[10] = "Int32";
+            _typeNameTable[4] = "Microsoft.UI.Xaml.Controls.TreeViewNode";
+            _typeNameTable[5] = "Windows.UI.Xaml.DependencyObject";
+            _typeNameTable[6] = "Boolean";
+            _typeNameTable[7] = "Object";
+            _typeNameTable[8] = "System.Collections.Generic.IList`1<Microsoft.UI.Xaml.Controls.TreeViewNode>";
+            _typeNameTable[9] = "Int32";
 
-            _typeTable = new global::System.Type[11];
+            _typeTable = new global::System.Type[10];
             _typeTable[0] = typeof(global::SlowVMusic.MainPage);
             _typeTable[1] = typeof(global::Windows.UI.Xaml.Controls.Page);
             _typeTable[2] = typeof(global::Windows.UI.Xaml.Controls.UserControl);
             _typeTable[3] = typeof(global::SlowVMusic.Views.HomePage);
-            _typeTable[4] = typeof(global::SlowVMusic.Views.PageLogin);
-            _typeTable[5] = typeof(global::Microsoft.UI.Xaml.Controls.TreeViewNode);
-            _typeTable[6] = typeof(global::Windows.UI.Xaml.DependencyObject);
-            _typeTable[7] = typeof(global::System.Boolean);
-            _typeTable[8] = typeof(global::System.Object);
-            _typeTable[9] = typeof(global::System.Collections.Generic.IList<global::Microsoft.UI.Xaml.Controls.TreeViewNode>);
-            _typeTable[10] = typeof(global::System.Int32);
+            _typeTable[4] = typeof(global::Microsoft.UI.Xaml.Controls.TreeViewNode);
+            _typeTable[5] = typeof(global::Windows.UI.Xaml.DependencyObject);
+            _typeTable[6] = typeof(global::System.Boolean);
+            _typeTable[7] = typeof(global::System.Object);
+            _typeTable[8] = typeof(global::System.Collections.Generic.IList<global::Microsoft.UI.Xaml.Controls.TreeViewNode>);
+            _typeTable[9] = typeof(global::System.Int32);
         }
 
         private int LookupTypeIndexByName(string typeName)
@@ -274,9 +272,8 @@ namespace SlowVMusic.SlowVMusic_XamlTypeInfo
 
         private object Activate_0_MainPage() { return new global::SlowVMusic.MainPage(); }
         private object Activate_3_HomePage() { return new global::SlowVMusic.Views.HomePage(); }
-        private object Activate_4_PageLogin() { return new global::SlowVMusic.Views.PageLogin(); }
-        private object Activate_5_TreeViewNode() { return new global::Microsoft.UI.Xaml.Controls.TreeViewNode(); }
-        private void VectorAdd_9_IList(object instance, object item)
+        private object Activate_4_TreeViewNode() { return new global::Microsoft.UI.Xaml.Controls.TreeViewNode(); }
+        private void VectorAdd_8_IList(object instance, object item)
         {
             var collection = (global::System.Collections.Generic.ICollection<global::Microsoft.UI.Xaml.Controls.TreeViewNode>)instance;
             var newItem = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)item;
@@ -315,16 +312,9 @@ namespace SlowVMusic.SlowVMusic_XamlTypeInfo
                 xamlType = userType;
                 break;
 
-            case 4:   //  SlowVMusic.Views.PageLogin
-                userType = new global::SlowVMusic.SlowVMusic_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Windows.UI.Xaml.Controls.Page"));
-                userType.Activator = Activate_4_PageLogin;
-                userType.SetIsLocalType();
-                xamlType = userType;
-                break;
-
-            case 5:   //  Microsoft.UI.Xaml.Controls.TreeViewNode
+            case 4:   //  Microsoft.UI.Xaml.Controls.TreeViewNode
                 userType = new global::SlowVMusic.SlowVMusic_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Windows.UI.Xaml.DependencyObject"));
-                userType.Activator = Activate_5_TreeViewNode;
+                userType.Activator = Activate_4_TreeViewNode;
                 userType.AddMemberName("IsExpanded");
                 userType.AddMemberName("HasUnrealizedChildren");
                 userType.AddMemberName("Content");
@@ -336,26 +326,26 @@ namespace SlowVMusic.SlowVMusic_XamlTypeInfo
                 xamlType = userType;
                 break;
 
-            case 6:   //  Windows.UI.Xaml.DependencyObject
+            case 5:   //  Windows.UI.Xaml.DependencyObject
                 xamlType = new global::SlowVMusic.SlowVMusic_XamlTypeInfo.XamlSystemBaseType(typeName, type);
                 break;
 
-            case 7:   //  Boolean
+            case 6:   //  Boolean
                 xamlType = new global::SlowVMusic.SlowVMusic_XamlTypeInfo.XamlSystemBaseType(typeName, type);
                 break;
 
-            case 8:   //  Object
+            case 7:   //  Object
                 xamlType = new global::SlowVMusic.SlowVMusic_XamlTypeInfo.XamlSystemBaseType(typeName, type);
                 break;
 
-            case 9:   //  System.Collections.Generic.IList`1<Microsoft.UI.Xaml.Controls.TreeViewNode>
+            case 8:   //  System.Collections.Generic.IList`1<Microsoft.UI.Xaml.Controls.TreeViewNode>
                 userType = new global::SlowVMusic.SlowVMusic_XamlTypeInfo.XamlUserType(this, typeName, type, null);
-                userType.CollectionAdd = VectorAdd_9_IList;
+                userType.CollectionAdd = VectorAdd_8_IList;
                 userType.SetIsReturnTypeStub();
                 xamlType = userType;
                 break;
 
-            case 10:   //  Int32
+            case 9:   //  Int32
                 xamlType = new global::SlowVMusic.SlowVMusic_XamlTypeInfo.XamlSystemBaseType(typeName, type);
                 break;
             }

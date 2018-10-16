@@ -7,39 +7,109 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:entity="using:SlowVMusic.Entity"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Loaded="homePage">
 
-    <Pivot>
-        <!--<Pivot.RightHeader>
-            <CommandBar>
-                <AppBarButton Icon="List" Background="Transparent"/>
-                <AppBarSeparator/>
-                <AppBarButton Icon="Add" Background="Transparent"/>
-            </CommandBar>
-        </Pivot.RightHeader>-->
-        <PivotItem Header="Danh Sách">
-            <ScrollViewer>
-                <ListView ItemsSource="{x:Bind ListSong, Mode=TwoWay}">
-                    <ListView.ItemTemplate>
-                        <DataTemplate x:DataType="entity:Song">
-                            <StackPanel Orientation="Horizontal">
-                                <Image Source="{x:Bind thumbnail}" Width="60" Height="60"/>
-                                <TextBlock Text="{x:Bind name}" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="10,0,0,0"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-            </ScrollViewer>
-        </PivotItem>
-        <PivotItem Header="Upload">
-            <Grid>
-                <StackPanel Margin="60,25">
-                    <TextBox PlaceholderText="Nhập tên bài hát" Header="Tên bài hát"/>
-                    <TextBox PlaceholderText="Ảnh bài hát" Header="Ảnh" Margin="0,10,0,0"/>
-                    <Button Content="Thêm"  Margin="200,10" Style="{Binding Source={StaticResource myButtonPrimary}}"/>
-                </StackPanel>
-            </Grid>
-        </PivotItem>
-    </Pivot>
-    
+    <Grid>
+        <Pivot>
+            <PivotItem Header="Danh Sách">
+                <ScrollViewer>
+                    <ListView ItemsSource="{x:Bind ListSong, Mode=TwoWay}" x:Name="MenuList">
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="entity:Song">
+                                <StackPanel Padding="12" Orientation="Horizontal" Tag="{Binding}" Tapped="StackPanel_Tapped" AutomationProperties.Name="{x:Bind name}">
+                                    <Ellipse Height="77" Width="77">
+                                        <Ellipse.Fill>
+                                            <ImageBrush ImageSource="{x:Bind thumbnail}"/>
+                                        </Ellipse.Fill>
+                                    </Ellipse>
+                                    <StackPanel Margin="24,12,0,0">
+                                        <TextBlock Text="{x:Bind name}" VerticalAlignment="Center" 
+                                               Style="{ThemeResource BaseTextBlockStyle}" 
+                                               Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}"
+                                                Margin="0,0,0,0"/>
+                                        <TextBlock Text="{x:Bind singer}" VerticalAlignment="Center"                                                
+                                               Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}" 
+                                               Margin="0,7,0,0"/>
+                                    </StackPanel>
+
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </ScrollViewer>
+            </PivotItem>
+            <PivotItem Header="My Song">
+                <ScrollViewer>
+                    <ListView ItemsSource="{x:Bind mySong, Mode=TwoWay}" x:Name="MenuMyList">
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="entity:Song">
+                                <StackPanel Padding="12" Orientation="Horizontal" Tag="{Binding}" Tapped="StackPanel_Tapped" AutomationProperties.Name="{x:Bind name}">
+                                    <Ellipse Height="77" Width="77">
+                                        <Ellipse.Fill>
+                                            <ImageBrush ImageSource="{x:Bind thumbnail}"/>
+                                        </Ellipse.Fill>
+                                    </Ellipse>
+                                    <StackPanel Margin="24,12,0,0">
+                                        <TextBlock Text="{x:Bind name}" VerticalAlignment="Center" 
+                                               Style="{ThemeResource BaseTextBlockStyle}" 
+                                               Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}"
+                                                Margin="0,0,0,0"/>
+                                        <TextBlock Text="{x:Bind singer}" VerticalAlignment="Center"                                                
+                                               Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}" 
+                                               Margin="0,7,0,0"/>
+                                    </StackPanel>
+
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </ScrollViewer>
+            </PivotItem>
+            <PivotItem Header="Upload">
+                <ScrollViewer>
+                    <StackPanel Margin="60,25">
+                        <TextBox PlaceholderText="Nhập tên bài hát" Header="Tên bài hát" x:Name="Name"/>
+                        <TextBox PlaceholderText="Ca sĩ thể hiện" Header="Ca sĩ" Margin="0,10,0,0" x:Name="Singer"/>
+                        <TextBox PlaceholderText="Nhạc sĩ" Header="Nhạc sĩ" Margin="0,10,0,0" x:Name="Author"/>
+                        <TextBox PlaceholderText="Thông tin bài hát" Header="Thông tin" Margin="0,10,0,0" x:Name="Description"/>
+                        <TextBox PlaceholderText="Ảnh bài hát" Header="Ảnh" Margin="0,10,0,0" x:Name="Thumbnail"/>
+                        <TextBox PlaceholderText="Link bài hát" Header="Link mp3" Margin="0,10,0,0" x:Name="Link"/>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <ProgressRing IsActive="False" x:Name="ProgressRing" Visibility="Collapsed" Background="Transparent" Margin="20, 0, 0, 0"/>
+                            <TextBlock x:Name="SongLoading" Text="Đang upload ...." Visibility="Collapsed" Foreground="#E74856" FontSize="12px;" Margin="10, 20, 0, 0"/>
+                            <Button Content="Upload bài hát"  Margin="200,10" Style="{Binding Source={StaticResource myButtonPrimary}}" Click="AddSong"/>
+                        </StackPanel>
+                    </StackPanel>
+                </ScrollViewer>
+            </PivotItem>
+        </Pivot>
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Bottom" Visibility="Collapsed" Orientation="Horizontal" Background="#FFDEDEDE" Height="25" Margin="0,0,0,40" x:Name="NameSongPlaying">
+            <TextBlock>
+                Now Playing:
+            </TextBlock>
+            <TextBlock x:Name="NowPlaying" Margin="10,0,0,0">
+            </TextBlock>
+        </StackPanel>
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Bottom" Orientation="Horizontal" Background="#FFDEDEDE" Height="45" x:Name="ControlSongPlaying" Visibility="Collapsed">
+            <AppBarSeparator/>
+                <TextBlock x:Name="MinDuration"/>
+                <ProgressBar x:Name="Progress" Height="15" Width="230"></ProgressBar>
+            <TextBlock x:Name="MaxDuration"/>
+            <AppBarSeparator/>
+            <AppBarButton Icon="Previous" Click="PlayBack" ToolTipService.ToolTip="Previous Song"/>
+            <AppBarButton Icon="Play" Click="PlayClick" ToolTipService.ToolTip="Play/Pause Song" x:Name="PlayButton"/>
+            <AppBarButton Icon="Next" Click="PlayNext" ToolTipService.ToolTip="Next Song"/>
+            <AppBarSeparator/>
+            <Slider x:Name="VolumeSlider" Width="110" HorizontalAlignment="Center" VerticalAlignment="Center" Height="30" ValueChanged="VolumeSlider_ValueChanged" ToolTipService.ToolTip="Volume"/>
+            <TextBlock x:Name="volume" Width="28" Height="20" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0" TextAlignment="Right">
+                100
+            </TextBlock>
+            <TextBlock Width="13" Height="20">
+                %
+            </TextBlock>
+            <AppBarSeparator/>
+        </StackPanel>
+        <MediaElement Width="550" x:Name="MediaPlayer">
+        </MediaElement>
+    </Grid>
 </Page>

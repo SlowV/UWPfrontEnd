@@ -13,6 +13,7 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Media.Capture;
 using Windows.Storage;
+using System.Net.Http;
 using Windows.Storage.Pickers;
 using Windows.Storage.Provider;
 using Windows.System;
@@ -28,6 +29,10 @@ using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 using Windows.Web.Http;
 using MUXC = Microsoft.UI.Xaml.Controls;
+using HttpClient = System.Net.Http.HttpClient;
+using HttpResponseMessage = System.Net.Http.HttpResponseMessage;
+using Windows.UI.Popups;
+using Windows.Foundation.Metadata;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -38,22 +43,23 @@ namespace SlowVMusic
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        private static Member currentLogin;
         private Member currentMember;
         private static StorageFile file;
         private static string UploadUrl;
+        private static bool isLogin = false;
 
         public MainPage()
         {
             GetUploadUrl();
             this.currentMember = new Member();
             this.InitializeComponent();
-            
         }
 
 
 
         ContentDialog dialogLogin = new ContentDialog();
-        ContentDialog dialogRegister = new ContentDialog();
+        ContentDialog dialogRegister;
 
         //Dialog login
         private async void PageLogin(object sender, RoutedEventArgs e)
@@ -100,24 +106,75 @@ namespace SlowVMusic
 
             dialogLogin.PrimaryButtonClick += async (s, args) =>
             {
+                currentLogin = new Member();
                 ContentDialogButtonClickDeferral deferral = args.GetDeferral();
-                //await Task.Delay(3000);  //Here I just wait 3 seconds
 
-                // Xu ly nut dang nhap ben trong nay.
-                Debug.WriteLine("SlowV");
+                var httpResponseMessage = APIHandle.Sign_In(textBoxName.Text, textBoxPass.Password).Result;
+
+                var responseContent = await httpResponseMessage.Content.ReadAsStringAsync();
+                if (httpResponseMessage.StatusCode == System.Net.HttpStatusCode.Created)
+                {
+                    // save file...
+                    Debug.WriteLine(responseContent);
+                    // Doc token
+                    TokenResponse token = JsonConvert.DeserializeObject<TokenResponse>(responseContent);
+
+                    // Luu token
+                    StorageFolder folder = ApplicationData.Current.LocalFolder;
+                    StorageFile file = await folder.CreateFileAsync("token.txt", CreationCollisionOption.ReplaceExisting);
+                    await FileIO.WriteTextAsync(file, responseContent);
+
+                    await DoLogin();
+                    //Đi thẳng vào MainPage và thích móc gì thì móc
+                    var frame = Window.Current.Content as Frame;
+                    var currentPage = frame.Content as Page;
+                    var appbarlogin = currentPage.FindName("ShowLoginButton");
+                    var appbarinfo = currentPage.FindName("ShowUserInfo");
+                    AppBarButton app1 = appbarlogin as AppBarButton;
+                    AppBarButton app2 = appbarinfo as AppBarButton;
+                    app1.Visibility = Visibility.Collapsed;
+                    app2.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    // Xu ly loi.
+                    ErrorResponse errorObject = JsonConvert.DeserializeObject<ErrorResponse>(responseContent);
+                    //if (errorObject != null && errorObject.error.Count > 0)
+                    //{
+                    //    foreach (var key in errorObject.error.Keys)
+                    //    {
+                    //        var textMessage = FindName(key);
+                    //        if (textMessage == null)
+                    //        {
+                    //            continue;
+                    //        }
+                    //        TextBlock textBlock = textMessage as TextBlock;
+                    //        textBlock.Text = errorObject.error[key];
+                    //        textBlock.Visibility = Visibility.Visible;
+                    //    }
+                    //}
+                    Debug.WriteLine(errorObject);
+                }
+
+
                 deferral.Complete();
             };
             await dialogLogin.ShowAsync();
         }
 
 
-
         //Dialog Register
-        Image avaterRegister = new Image();
-        TextBox url_ImageRegister = new TextBox();
+        Image avaterRegister;
+        TextBox url_ImageRegister;
+
+        internal static Member CurrentLogin { get => currentLogin; set => currentLogin = value; }
+
         private async void LinkSignUp_Click(object sender, RoutedEventArgs e)
         {
+            dialogRegister = new ContentDialog();
             var stackPanel = new StackPanel();
+            avaterRegister = new Image();
+            url_ImageRegister = new TextBox();
             var sv = new ScrollViewer()
             {
                 Content = stackPanel
@@ -187,7 +244,7 @@ namespace SlowVMusic
             avaterRegister.Name = "MyAvatar";
             avaterRegister.Width = 120;
             avaterRegister.Height = 120;
-            avaterRegister.Margin = new Thickness(60,0,0,0);
+            avaterRegister.Margin = new Thickness(60, 0, 0, 0);
             avaterRegister.HorizontalAlignment = HorizontalAlignment.Right;
             avaterRegister.VerticalAlignment = VerticalAlignment.Center;
             avaterRegister.Source = new BitmapImage(new Uri(@"http://stc.zuni.vn/resource/module/default/layout/image/default_avatar.png"));
@@ -351,6 +408,7 @@ namespace SlowVMusic
             await dialogRegister.ShowAsync();
         }
 
+
         private void BirthDay_DateChanged(CalendarDatePicker sender, CalendarDatePickerDateChangedEventArgs args)
         {
             this.currentMember.birthday = sender.Date.Value.ToString("yyyy-MM-dd");
@@ -477,20 +535,20 @@ namespace SlowVMusic
                         contentFrame.Navigate(typeof(Views.HomePage), null, new EntranceNavigationTransitionInfo());
                         break;
 
-                    case "Nav_Shop":
-                        contentFrame.Navigate(typeof(Views.PageLogin), null, new EntranceNavigationTransitionInfo());
+                    case "Nav_Bxh":
+                        contentFrame.Navigate(typeof(Views.HomePage), null, new EntranceNavigationTransitionInfo());
                         break;
 
-                    case "Nav_ShopCart":
-                        contentFrame.Navigate(typeof(Views.PageLogin), null, new EntranceNavigationTransitionInfo());
+                    case "Nav_MusicCPOP":
+                        contentFrame.Navigate(typeof(Views.HomePage), null, new EntranceNavigationTransitionInfo());
                         break;
 
-                    case "Nav_Message":
-                        contentFrame.Navigate(typeof(Views.PageLogin), null, new EntranceNavigationTransitionInfo());
+                    case "Nav_MusicUK":
+                        contentFrame.Navigate(typeof(Views.HomePage), null, new EntranceNavigationTransitionInfo());
                         break;
 
-                    case "Nav_Print":
-                        contentFrame.Navigate(typeof(Views.PageLogin), null, new EntranceNavigationTransitionInfo());
+                    case "Nav_MusicVPOP":
+                        contentFrame.Navigate(typeof(Views.HomePage), null, new EntranceNavigationTransitionInfo());
                         break;
                 }
             }
@@ -508,6 +566,100 @@ namespace SlowVMusic
                 }
             }
             contentFrame.Navigate(typeof(Views.HomePage));
+        }
+
+        public static async Task DoLogin()
+        {
+            // Auto login nếu tồn tại file token 
+            currentLogin = new Member();
+            StorageFolder folder = ApplicationData.Current.LocalFolder;
+            if (await folder.TryGetItemAsync("token.txt") != null)
+            {
+                StorageFile file = await folder.GetFileAsync("token.txt");
+                var tokenContent = await FileIO.ReadTextAsync(file);
+
+                TokenResponse token = JsonConvert.DeserializeObject<TokenResponse>(tokenContent);
+
+                // Lay thong tin ca nhan bang token.
+                HttpClient client2 = new HttpClient();
+                client2.DefaultRequestHeaders.Add("Authorization", "Basic " + token.token);
+                var resp = client2.GetAsync("http://2-dot-backup-server-002.appspot.com/_api/v2/members/information").Result;
+                Debug.WriteLine(await resp.Content.ReadAsStringAsync());
+                var userInfoContent = await resp.Content.ReadAsStringAsync();
+
+                Member userInfoJson = JsonConvert.DeserializeObject<Member>(userInfoContent);
+
+                currentLogin.firstName = userInfoJson.firstName;
+                currentLogin.lastName = userInfoJson.lastName;
+                currentLogin.avatar = userInfoJson.avatar;
+                currentLogin.phone = userInfoJson.phone;
+                currentLogin.address = userInfoJson.address;
+                currentLogin.introduction = userInfoJson.introduction;
+                currentLogin.gender = userInfoJson.gender;
+                currentLogin.birthday = userInfoJson.birthday;
+                currentLogin.email = userInfoJson.email;
+                currentLogin.password = userInfoJson.password;
+                currentLogin.id = userInfoJson.id;
+                currentLogin.salt = userInfoJson.salt;
+                currentLogin.createdAt = userInfoJson.createdAt;
+                currentLogin.updatedAt = userInfoJson.updatedAt;
+                currentLogin.status = userInfoJson.status;
+
+                isLogin = true;
+            }
+            else
+            {
+                Debug.WriteLine("File doesn't exist");
+                isLogin = false;
+            };
+        }
+
+        private async void OnPageLoaded(object sender, RoutedEventArgs e)
+        {
+            await DoLogin();
+            //Change UI nếu Logined
+            if (isLogin)
+            {
+                this.ShowLoginButton.Visibility = Visibility.Collapsed;
+                this.ShowUserInfo.Visibility = Visibility.Visible;
+
+                var dialog = new Windows.UI.Popups.MessageDialog("Chào mừng quay " + currentLogin.firstName + " " + currentLogin.lastName + " quay trở lại!");
+                dialog.Commands.Add(new Windows.UI.Popups.UICommand("Đóng") { Id = 1 });
+                dialog.CancelCommandIndex = 1;
+                await dialog.ShowAsync();
+            }
+            else
+            {
+               
+            }
+
+            // Đi thẳng vào MainPage và thích móc gì thì móc
+            //var frame = Window.Current.Content as Frame;
+            //var currentPage = frame.Content as Page;
+            //var appbar = currentPage.FindName("ShowUserInfo");
+            //AppBarButton app = appbar as AppBarButton;
+            //app.Label = "slowV";
+        }
+
+        private async void LogoutUser(object sender, RoutedEventArgs e)
+        {
+            currentLogin = null;
+            StorageFile filed = await ApplicationData.Current.LocalFolder.GetFileAsync("token.txt");
+            if (filed != null)
+            {
+                await filed.DeleteAsync();
+                Debug.WriteLine("Xoa thanh cong");
+                ShowLoginButton.Visibility = Visibility.Visible;
+                ShowUserInfo.Visibility = Visibility.Collapsed;
+                var dialog = new Windows.UI.Popups.MessageDialog("Đăng xuất thành công");
+                dialog.Commands.Add(new Windows.UI.Popups.UICommand("Đóng") { Id = 1 });
+                dialog.CancelCommandIndex = 1;
+                await dialog.ShowAsync();
+            }
+            else
+            {
+
+            }
         }
     }
 }
