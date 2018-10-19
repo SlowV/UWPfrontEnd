@@ -1,0 +1,72 @@
+﻿<Page x:ConnectionId='1'
+    x:Class="SlowVMusic.Views.SearchPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:SlowVMusic.Views"
+    xmlns:entity="using:SlowVMusic.Entity"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <StackPanel Margin="20 0 0 30">
+            <TextBlock x:ConnectionId='19' Text="Kết quả tìm kiếm" x:Name="CountSearch" Margin="10 0 0 0"/>
+        </StackPanel>
+        <ScrollViewer>
+            <StackPanel Margin="20 0">
+                <ListView x:ConnectionId='14'                                              x:Name="listViewSearch">
+                    <ListView.ItemTemplate >
+                        <DataTemplate                         >
+                            <StackPanel x:ConnectionId='15' Padding="12" Orientation="Horizontal" Tag="{Binding}"                                                                     >
+                                <Ellipse Height="77" Width="77">
+                                    <Ellipse.Fill>
+                                        <ImageBrush x:ConnectionId='18'                                 />
+                                    </Ellipse.Fill>
+                                </Ellipse>
+                                <StackPanel Margin="24,12,0,0">
+                                    <TextBlock x:ConnectionId='16'                      VerticalAlignment="Center" 
+                                               Style="{ThemeResource BaseTextBlockStyle}" 
+                                               Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}"
+                                                Margin="0,0,0,0"/>
+                                    <TextBlock x:ConnectionId='17'                        VerticalAlignment="Center"                                                
+                                               Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}" 
+                                               Margin="0,7,0,0"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackPanel>
+        </ScrollViewer>
+        <StackPanel x:ConnectionId='2' HorizontalAlignment="Center" VerticalAlignment="Bottom" Visibility="Visible" Orientation="Horizontal" Background="#FFDEDEDE" Height="25" Margin="0,0,0,40" x:Name="NameSongPlaying">
+            <TextBlock>
+                         Now Playing:
+            </TextBlock>
+            <TextBlock x:ConnectionId='13' x:Name="NowPlaying" Margin="10,0,0,0">
+            </TextBlock>
+        </StackPanel>
+        <StackPanel x:ConnectionId='3' HorizontalAlignment="Center" VerticalAlignment="Bottom" Orientation="Horizontal" Background="#FFDEDEDE" Height="45" x:Name="ControlSongPlaying" Visibility="Visible">
+            <AppBarSeparator/>
+            <TextBlock x:ConnectionId='5' x:Name="MinDuration"/>
+            <ProgressBar x:ConnectionId='6' x:Name="Progress" Height="15" Width="230"></ProgressBar>
+            <TextBlock x:ConnectionId='7' x:Name="MaxDuration"/>
+            <AppBarSeparator/>
+            <AppBarButton x:ConnectionId='8' Icon="Previous"                  ToolTipService.ToolTip="Previous Song"/>
+            <AppBarButton x:ConnectionId='9' Icon="Play"                   ToolTipService.ToolTip="Play/Pause Song" x:Name="PlayButton"/>
+            <AppBarButton x:ConnectionId='10' Icon="Next"                  ToolTipService.ToolTip="Next Song"/>
+            <AppBarSeparator/>
+            <Slider x:ConnectionId='11' x:Name="VolumeSlider" Width="110" HorizontalAlignment="Center" VerticalAlignment="Center" Height="30"                                          ToolTipService.ToolTip="Volume"/>
+            <TextBlock x:ConnectionId='12' x:Name="volume" Width="28" Height="20" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0" TextAlignment="Right">
+                        100
+            </TextBlock>
+            <TextBlock Width="13" Height="20">
+                        %
+            </TextBlock>
+            <AppBarSeparator/>
+        </StackPanel>
+        <MediaElement x:ConnectionId='4' Width="550" x:Name="MediaPlayer">
+        </MediaElement>
+    </Grid>
+</Page>
+

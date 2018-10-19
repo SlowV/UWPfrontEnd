@@ -15,6 +15,7 @@ namespace SlowVMusic.Entity
         private string _thumbnail;
         private string _link;
         private long _memberId;
+        private long _id;
 
         public string name { get => _name; set => _name = value; }
         public string description { get => _description; set => _description = value; }
@@ -23,5 +24,6 @@ namespace SlowVMusic.Entity
         public string thumbnail { get => _thumbnail; set => _thumbnail = value; }
         public string link { get => _link; set => _link = value; }
         public long memberId { get => _memberId; set => _memberId = value; }
+        public long id { get => _id; set => _id = value; }
     }
 }

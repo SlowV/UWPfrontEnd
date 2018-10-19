@@ -15,7 +15,7 @@
             <VisualStateGroup>
                 <VisualState>
                     <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="{x:Bind nvTopLevelNav.CompactModeThresholdWidth}" />
+                        <AdaptiveTrigger MinWindowWidth="{x:Bind NavView.CompactModeThresholdWidth}" />
                     </VisualState.StateTriggers>
 
                     <VisualState.Setters>
@@ -24,12 +24,12 @@
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
-        <NavigationView x:Name="nvTopLevelNav"
-                Loaded="nvTopLevelNav_Loaded"
+        <NavigationView x:Name="NavView"
+                Loaded="NavView_Loaded"
                 Margin="0,12,0,0"
-                SelectionChanged="nvTopLevelNav_SelectionChanged"
-                ItemInvoked="nvTopLevelNav_ItemInvoked"
-                IsTabStop="False">
+                ItemInvoked="NavView_ItemInvoked"
+                IsTabStop="False"
+                IsSettingsVisible="False" IsPaneOpen="False">
             <NavigationView.MenuItems>
                 <NavigationViewItem Icon="Home" Tag="Home_Page">
                     <TextBlock Tag="Nav_Home">Trang chủ</TextBlock>
@@ -49,7 +49,7 @@
             </NavigationView.MenuItems>
             
             <NavigationView.AutoSuggestBox>
-                <AutoSuggestBox x:Name="ASB" QueryIcon="Find"/>
+                <AutoSuggestBox x:Name="search" QueryIcon="Find" KeyUp="KeyDownSearch"/>
             </NavigationView.AutoSuggestBox>
 
             <NavigationView.Header>
@@ -59,7 +59,7 @@
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Style="{StaticResource TitleTextBlockStyle}"
-                           FontSize="28"
+                           FontSize="25"
                            VerticalAlignment="Center"
                            Text="SlowV Music"/>
                     <CommandBar Grid.Column="1"
@@ -73,7 +73,8 @@
                         <AppBarButton x:Name="ShowUserInfo" Icon="Contact" Label="Thông tin">
                             <AppBarButton.Flyout>
                                 <MenuFlyout>
-                                    <MenuFlyoutItem x:Name="InfoUser" Text="SlowV" />
+                                    <MenuFlyoutItem x:Name="InfoUser" Text="SlowV" Click="inforUser"/>
+                                    <MenuFlyoutItem x:Name="SaveDB" Text="Save Song" Click="SaveSong"/>
                                     <MenuFlyoutItem x:Name="Logout" Text="Đăng xuất" Click="LogoutUser"/>
                                 </MenuFlyout>
                             </AppBarButton.Flyout>
@@ -81,7 +82,7 @@
                     </CommandBar>
                 </Grid>
             </NavigationView.Header>
-            <Frame x:Name="contentFrame"/>
+            <Frame x:Name="ContentFrame"/>
         </NavigationView>
     </Grid>
 </Page>

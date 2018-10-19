@@ -159,12 +159,13 @@
     <RootType FullName="Windows.UI.Xaml.Controls.NavigationView">
       <RootProperty Name="Margin" />
       <RootProperty Name="IsTabStop" />
+      <RootProperty Name="IsSettingsVisible" />
+      <RootProperty Name="IsPaneOpen" />
       <RootProperty Name="MenuItems" />
       <RootProperty Name="AutoSuggestBox" />
       <RootProperty Name="Header" />
       <RootProperty Name="Content" />
       <RootEvent Name="Loaded" />
-      <RootEvent Name="SelectionChanged" />
       <RootEvent Name="ItemInvoked" />
     </RootType>
     <RootType FullName="Windows.UI.Xaml.Controls.NavigationViewItem">
@@ -189,6 +190,7 @@
     </RootType>
     <RootType FullName="Windows.UI.Xaml.Controls.AutoSuggestBox">
       <RootProperty Name="QueryIcon" />
+      <RootEvent Name="KeyUp" />
     </RootType>
     <RootType FullName="Windows.UI.Xaml.Controls.CommandBar">
       <RootProperty Name="HorizontalAlignment" />
@@ -220,7 +222,6 @@
     <RootType FullName="Windows.UI.Xaml.Controls.StackPanel">
       <RootProperty Name="HorizontalAlignment" />
       <RootProperty Name="VerticalAlignment" />
-      <RootProperty Name="Visibility" />
       <RootProperty Name="Orientation" />
       <RootProperty Name="Background" />
       <RootProperty Name="Height" />
@@ -228,6 +229,7 @@
       <RootProperty Name="Children" />
       <RootProperty Name="Padding" />
       <RootProperty Name="Tag" />
+      <RootProperty Name="Visibility" />
       <RootEvent Name="Tapped" />
     </RootType>
     <RootType FullName="Windows.UI.Xaml.Controls.MediaElement">
@@ -237,6 +239,9 @@
     <RootType FullName="Windows.UI.Xaml.Controls.ProgressBar">
       <RootProperty Name="Height" />
       <RootProperty Name="Width" />
+      <RootProperty Name="IsIndeterminate" />
+      <RootProperty Name="ShowPaused" />
+      <RootProperty Name="ShowError" />
     </RootType>
     <RootType FullName="Windows.UI.Xaml.Controls.ToolTipService">
       <RootMethod Name="GetToolTip" />
@@ -283,5 +288,7 @@
       <RootProperty Name="ImageSource" />
     </RootType>
     <RootType FullName="SlowVMusic.Views.HomePage" />
+    <RootType FullName="SlowVMusic.Views.ProgressRing" />
+    <RootType FullName="SlowVMusic.Views.SearchPage" />
   </Roots.RootTypes>
 </Roots>

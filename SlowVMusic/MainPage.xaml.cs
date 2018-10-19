@@ -33,6 +33,7 @@ using HttpClient = System.Net.Http.HttpClient;
 using HttpResponseMessage = System.Net.Http.HttpResponseMessage;
 using Windows.UI.Popups;
 using Windows.Foundation.Metadata;
+using Microsoft.Data.Sqlite;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -48,6 +49,7 @@ namespace SlowVMusic
         private static StorageFile file;
         private static string UploadUrl;
         private static bool isLogin = false;
+        private static List<Song> lstSong;
 
         public MainPage()
         {
@@ -314,13 +316,13 @@ namespace SlowVMusic
             var Female = new RadioButton
             {
                 Content = "Nữ",
-                Tag = 2,
+                Tag = 0,
             };
 
             var Other = new RadioButton
             {
                 Content = "Khác",
-                Tag = 3,
+                Tag = 2,
                 IsChecked = true
             };
 
@@ -519,54 +521,7 @@ namespace SlowVMusic
             await dialogLogin.ShowAsync();
         }
 
-        private void nvTopLevelNav_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
-        {
 
-        }
-
-        private void nvTopLevelNav_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
-        {
-            TextBlock ItemContent = args.InvokedItem as TextBlock;
-            if (ItemContent != null)
-            {
-                switch (ItemContent.Tag)
-                {
-                    case "Nav_Home":
-                        contentFrame.Navigate(typeof(Views.HomePage), null, new EntranceNavigationTransitionInfo());
-                        break;
-
-                    case "Nav_Bxh":
-                        contentFrame.Navigate(typeof(Views.HomePage), null, new EntranceNavigationTransitionInfo());
-                        break;
-
-                    case "Nav_MusicCPOP":
-                        contentFrame.Navigate(typeof(Views.HomePage), null, new EntranceNavigationTransitionInfo());
-                        break;
-
-                    case "Nav_MusicUK":
-                        contentFrame.Navigate(typeof(Views.HomePage), null, new EntranceNavigationTransitionInfo());
-                        break;
-
-                    case "Nav_MusicVPOP":
-                        contentFrame.Navigate(typeof(Views.HomePage), null, new EntranceNavigationTransitionInfo());
-                        break;
-                }
-            }
-        }
-
-        private void nvTopLevelNav_Loaded(object sender, RoutedEventArgs e)
-        {
-            // set the initial SelectedItem
-            foreach (NavigationViewItemBase item in nvTopLevelNav.MenuItems)
-            {
-                if (item is NavigationViewItem && item.Tag.ToString() == "Home_Page")
-                {
-                    nvTopLevelNav.SelectedItem = item;
-                    break;
-                }
-            }
-            contentFrame.Navigate(typeof(Views.HomePage));
-        }
 
         public static async Task DoLogin()
         {
@@ -620,9 +575,17 @@ namespace SlowVMusic
             //Change UI nếu Logined
             if (isLogin)
             {
+                if (currentLogin.id == 1538886332539 && currentLogin.email == "quocviet.hn98@gmail.com")
+                {
+                    SaveDB.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    SaveDB.Visibility = Visibility.Collapsed;
+                }
                 this.ShowLoginButton.Visibility = Visibility.Collapsed;
                 this.ShowUserInfo.Visibility = Visibility.Visible;
-
+                InfoUser.Text = currentLogin.firstName + " " + currentLogin.lastName;
                 var dialog = new Windows.UI.Popups.MessageDialog("Chào mừng quay " + currentLogin.firstName + " " + currentLogin.lastName + " quay trở lại!");
                 dialog.Commands.Add(new Windows.UI.Popups.UICommand("Đóng") { Id = 1 });
                 dialog.CancelCommandIndex = 1;
@@ -630,7 +593,7 @@ namespace SlowVMusic
             }
             else
             {
-               
+
             }
 
             // Đi thẳng vào MainPage và thích móc gì thì móc
@@ -639,6 +602,16 @@ namespace SlowVMusic
             //var appbar = currentPage.FindName("ShowUserInfo");
             //AppBarButton app = appbar as AppBarButton;
             //app.Label = "slowV";
+
+            if (GlobalFlySong.GlobalSong != null)
+            {
+                Debug.WriteLine(GlobalFlySong.GlobalSong);
+            }
+            else
+            {
+                Debug.WriteLine("GlobalSong Chưa có gì");
+            }
+
         }
 
         private async void LogoutUser(object sender, RoutedEventArgs e)
@@ -660,6 +633,306 @@ namespace SlowVMusic
             {
 
             }
+        }
+
+        private readonly IList<(string Tag, Type Page)> _pages = new List<(string Tag, Type Page)>
+        {
+            ("Home_Page", typeof(Views.HomePage)),
+            ("Bxh_Page", typeof(Views.HomePage)),
+            ("MusicCPOP_Page", typeof(Views.HomePage)),
+            ("MusicUK_Page", typeof(Views.HomePage)),
+            ("MusicVPOP_Page", typeof(Views.HomePage)),
+        };
+
+        private void NavView_Loaded(object sender, RoutedEventArgs e)
+        {
+            // You can also add items in code behind
+            NavView.MenuItems.Add(new NavigationViewItemSeparator());
+            NavView.MenuItems.Add(new NavigationViewItem
+            {
+                Content = "My content",
+                Icon = new SymbolIcon(Symbol.Folder),
+                Tag = "content"
+            });
+            _pages.Add(("content", typeof(Views.HomePage)));
+
+            //ContentFrame.Navigated += On_Navigated;
+
+            // NavView doesn't load any page by default: you need to specify it
+            NavView_Navigate("Home_Page");
+
+            // Add keyboard accelerators for backwards navigation
+            var goBack = new KeyboardAccelerator { Key = VirtualKey.GoBack };
+            goBack.Invoked += BackInvoked;
+            this.KeyboardAccelerators.Add(goBack);
+
+            // ALT routes here
+            var altLeft = new KeyboardAccelerator
+            {
+                Key = VirtualKey.Left,
+                Modifiers = VirtualKeyModifiers.Menu
+            };
+            altLeft.Invoked += BackInvoked;
+            this.KeyboardAccelerators.Add(altLeft);
+        }
+
+        private void NavView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
+        {
+
+            if (args.IsSettingsInvoked)
+                ContentFrame.Navigate(typeof(MainPage));
+            else
+            {
+                // Getting the Tag from Content (args.InvokedItem is the content of NavigationViewItem)
+                var navItemTag = NavView.MenuItems
+                    .OfType<NavigationViewItem>()
+                    .First(i => args.InvokedItem.Equals(i.Content))
+                    .Tag.ToString();
+
+                NavView_Navigate(navItemTag);
+            }
+        }
+
+        private void NavView_Navigate(string navItemTag)
+        {
+            var item = _pages.First(p => p.Tag.Equals(navItemTag));
+            ContentFrame.Navigate(item.Page);
+        }
+
+        private void NavView_BackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)
+        {
+            On_BackRequested();
+        }
+
+        private void BackInvoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
+        {
+            On_BackRequested();
+            args.Handled = true;
+        }
+
+        private bool On_BackRequested()
+        {
+            if (!ContentFrame.CanGoBack)
+                return false;
+
+            // Don't go back if the nav pane is overlayed
+            if (NavView.IsPaneOpen &&
+                (NavView.DisplayMode == NavigationViewDisplayMode.Compact ||
+                NavView.DisplayMode == NavigationViewDisplayMode.Minimal))
+                return false;
+
+            ContentFrame.GoBack();
+            return true;
+        }
+
+        //private void On_Navigated(object sender, NavigationEventArgs e)
+        //{
+        //    NavView.IsBackEnabled = ContentFrame.CanGoBack;
+
+        //    if (ContentFrame.SourcePageType == typeof(Views.HomePage))
+        //    {
+        //        // SettingsItem is not part of NavView.MenuItems, and doesn't have a Tag
+        //        NavView.SelectedItem = (NavigationViewItem)NavView.SettingsItem;
+        //    }
+        //    else
+        //    {
+        //        var item = _pages.First(p => p.Page == e.SourcePageType);
+
+        //        NavView.SelectedItem = NavView.MenuItems
+        //            .OfType<NavigationViewItem>()
+        //            .First(n => n.Tag.Equals(item.Tag));
+        //    }
+        //}
+
+
+        private async void inforUser(object sender, RoutedEventArgs e)
+        {
+            dialogRegister = new ContentDialog();
+            var stackPanel = new StackPanel();
+            avaterRegister = new Image();
+            var sv = new ScrollViewer()
+            {
+                Content = stackPanel
+            };
+
+            var email = new TextBlock
+            {
+                Margin = new Thickness(50, 5, 50, 10),
+                Text = "Email: " + currentLogin.email
+            };
+
+            // Tạo input tài khoản. 
+            var textBoxName = new TextBlock
+            {
+                Margin = new Thickness(50, 5, 50, 10),
+                Text = "Họ và tên: " + currentLogin.firstName + " " + currentLogin.lastName
+            };
+
+
+
+            var stackPanelAvatar = new StackPanel();
+            stackPanelAvatar.Orientation = Orientation.Horizontal;
+
+            //thẻ Image để nhét Avatar khi chụp ảnh.
+            avaterRegister.Name = "MyAvatar";
+            avaterRegister.Width = 150;
+            avaterRegister.Height = 150;
+            avaterRegister.Margin = new Thickness(60, 0, 0, 0);
+            avaterRegister.HorizontalAlignment = HorizontalAlignment.Right;
+            avaterRegister.VerticalAlignment = VerticalAlignment.Center;
+            avaterRegister.Source = new BitmapImage(new Uri(currentLogin.avatar));
+
+            stackPanelAvatar.Children.Add(avaterRegister);
+
+            var phone = new TextBlock
+            {
+                Margin = new Thickness(50, 5, 50, 10),
+                Text = "Số điện thoại: " + currentLogin.phone
+            };
+
+            var address = new TextBlock
+            {
+                Margin = new Thickness(50, 5, 50, 10),
+                Text = "Địa chỉ: " + currentLogin.address
+            };
+
+            var introduction = new TextBlock
+            {
+                Margin = new Thickness(50, 5, 50, 10),
+                Text = "Giới thiệu: " + currentLogin.introduction
+            };
+
+            var stackPanelGender = new StackPanel
+            {
+                Orientation = Orientation.Horizontal,
+                Margin = new Thickness(50, 5, 50, 10),
+            };
+
+            int parGender = currentLogin.gender;
+
+            var gender = new TextBlock();
+
+            if (parGender == 1)
+            {
+                gender.Text = "Giới tính: Nam";
+            }
+            else if (parGender == 2)
+            {
+                gender.Text = "Giới tính: Nữ";
+            }
+            else
+            {
+                gender.Text = "Giới tính: Khác";
+            }
+
+            stackPanelGender.Children.Add(gender);
+            //End Ui giới tính.
+
+
+            // add giao diện vào layout.
+            stackPanel.Children.Add(textBoxName);
+            stackPanel.Children.Add(email);
+            stackPanel.Children.Add(stackPanelAvatar);
+            stackPanel.Children.Add(phone);
+            stackPanel.Children.Add(address);
+            stackPanel.Children.Add(stackPanelGender);
+            stackPanel.Children.Add(introduction);
+
+            stackPanel.MinWidth = Window.Current.Bounds.Width - 600;
+            stackPanel.MaxWidth = Window.Current.Bounds.Height;
+            dialogRegister.MinWidth = Window.Current.Bounds.Width;
+            dialogRegister.MaxWidth = Window.Current.Bounds.Height;
+
+            Style btnPrimaryStyle = (Style)App.Current.Resources["myButtonPrimary"];
+            dialogRegister.Title = "Thông tin ";
+            dialogRegister.Content = sv;
+            dialogRegister.CloseButtonText = "Đóng";
+            dialogRegister.CloseButtonStyle = btnPrimaryStyle;
+            await dialogRegister.ShowAsync();
+        }
+
+        private async Task<List<Song>> Get_List_Song()
+        {
+
+            StorageFolder folder = ApplicationData.Current.LocalFolder;
+            if (await folder.TryGetItemAsync("token.txt") != null)
+            {
+                HttpClient httpClient = new HttpClient();
+                StorageFile file = await folder.GetFileAsync("token.txt");
+                var tokenContent = await FileIO.ReadTextAsync(file);
+
+                TokenResponse token = JsonConvert.DeserializeObject<TokenResponse>(tokenContent);
+                httpClient.DefaultRequestHeaders.Add("Authorization", "Basic " + token.token);
+                var response = httpClient.GetAsync(APIHandle.API_CREATE_SONG);
+                var songContent = await response.Result.Content.ReadAsStringAsync();
+                Debug.WriteLine(songContent);
+                lstSong = JsonConvert.DeserializeObject<List<Song>>(songContent);
+            }
+
+            return lstSong;
+        }
+
+        private async void SaveSong(object sender, RoutedEventArgs e)
+        {
+            Song Song = new Song();
+            List<Song> i = await Get_List_Song();
+            foreach (var item in i)
+            {
+                if(item.description == null)
+                {
+                    Song.id = item.id;
+                    Song.name = item.name;
+                    Song.description = "None";
+                    Song.singer = item.singer;
+                    Song.author = item.author;
+                    Song.thumbnail = item.thumbnail;
+                    Song.link = item.link;
+                }
+                else
+                {
+                    Song.id = item.id;
+                    Song.name = item.name;
+                    Song.description = item.description;
+                    Song.singer = item.singer;
+                    Song.author = item.author;
+                    Song.thumbnail = item.thumbnail;
+                    Song.link = item.link;
+                }
+                Db_Table_Song(Song);
+            };
+        }
+
+        private static void Db_Table_Song(Song song)
+        {
+            using (SqliteConnection db = new SqliteConnection("Filename=slowvmusic.db"))
+            {
+                db.Open();
+
+                SqliteCommand insertCommand = new SqliteCommand();
+                insertCommand.Connection = db;
+
+                // Use parameterized query to prevent SQL injection attacks
+                insertCommand.CommandText = "INSERT OR REPLACE INTO Song VALUES ( COALESCE((SELECT id FROM Song WHERE id = @id), @id), @name, @description, @singer, @author, @thumbnail, @link);";
+                insertCommand.Parameters.AddWithValue("@id", song.id);
+                insertCommand.Parameters.AddWithValue("@name", song.name);
+                insertCommand.Parameters.AddWithValue("@description",song.description);
+                insertCommand.Parameters.AddWithValue("@singer", song.singer);
+                insertCommand.Parameters.AddWithValue("@author", song.author);
+                insertCommand.Parameters.AddWithValue("@thumbnail", song.thumbnail);
+                insertCommand.Parameters.AddWithValue("@link", song.link);
+
+
+                insertCommand.ExecuteReader();
+
+                db.Close();
+            }
+
+        }
+
+        private async void KeyDownSearch(object sender, KeyRoutedEventArgs e)
+        {
+            List<Song> i = Model.SongModel.Search(search.Text);
+            ContentFrame.Navigate(typeof(Views.SearchPage), i);
         }
     }
 }

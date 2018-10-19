@@ -31,13 +31,13 @@
     <AppXManifest Include="d:\document\visual studio 2017\Projects\SlowVMusic\SlowVMusic\bin\x86\Debug\Core\AppxManifest.xml">
       <PackagePath>AppxManifest.xml</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2018-10-16T10:26:45.071</Modified>
+      <Modified>2018-10-18T12:45:24.987</Modified>
     </AppXManifest>
   </ItemGroup>
   <ItemGroup>
     <AppxPackagedFile Include="d:\document\visual studio 2017\Projects\SlowVMusic\SlowVMusic\bin\x86\Debug\SlowVMusic.exe">
       <PackagePath>entrypoint\SlowVMusic.exe</PackagePath>
-      <Modified>2018-10-16T10:26:43.997</Modified>
+      <Modified>2018-10-18T12:45:24.135</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admins\.nuget\packages\microsoft.data.sqlite\1.1.1\lib\netstandard1.3\Microsoft.Data.Sqlite.dll">
       <PackagePath>Microsoft.Data.Sqlite.dll</PackagePath>
@@ -762,19 +762,27 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="d:\document\visual studio 2017\Projects\SlowVMusic\SlowVMusic\bin\x86\Debug\SlowVMusic.xr.xml">
       <PackagePath>SlowVMusic.xr.xml</PackagePath>
-      <Modified>2018-10-16T10:26:43.490</Modified>
+      <Modified>2018-10-17T12:05:19.798</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="d:\document\visual studio 2017\Projects\SlowVMusic\SlowVMusic\bin\x86\Debug\App.xbf">
       <PackagePath>App.xbf</PackagePath>
-      <Modified>2018-10-16T10:26:43.558</Modified>
+      <Modified>2018-10-18T12:45:23.682</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="d:\document\visual studio 2017\Projects\SlowVMusic\SlowVMusic\bin\x86\Debug\MainPage.xbf">
       <PackagePath>MainPage.xbf</PackagePath>
-      <Modified>2018-10-16T10:26:43.559</Modified>
+      <Modified>2018-10-18T12:45:23.682</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="d:\document\visual studio 2017\Projects\SlowVMusic\SlowVMusic\bin\x86\Debug\Views\HomePage.xbf">
       <PackagePath>Views\HomePage.xbf</PackagePath>
-      <Modified>2018-10-16T10:26:43.559</Modified>
+      <Modified>2018-10-18T12:45:23.683</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="d:\document\visual studio 2017\Projects\SlowVMusic\SlowVMusic\bin\x86\Debug\Views\ProgressRing.xbf">
+      <PackagePath>Views\ProgressRing.xbf</PackagePath>
+      <Modified>2018-10-18T12:45:23.683</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="d:\document\visual studio 2017\Projects\SlowVMusic\SlowVMusic\bin\x86\Debug\Views\SearchPage.xbf">
+      <PackagePath>Views\SearchPage.xbf</PackagePath>
+      <Modified>2018-10-18T12:45:23.683</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\UnionMetadata\10.0.17134.0\Windows.winmd">
       <PackagePath>WinMetadata\Windows.winmd</PackagePath>
@@ -787,11 +795,11 @@
     <AppxPackagedFile Include="d:\document\visual studio 2017\Projects\SlowVMusic\SlowVMusic\bin\x86\Debug\resources.pri">
       <PackagePath>resources.pri</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2018-10-15T06:49:12.106</Modified>
+      <Modified>2018-10-17T06:56:35.952</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="d:\document\visual studio 2017\Projects\SlowVMusic\SlowVMusic\bin\x86\Debug\Core\SlowVMusic.exe">
       <PackagePath>SlowVMusic.exe</PackagePath>
-      <Modified>2018-10-16T10:26:45.065</Modified>
+      <Modified>2018-10-18T12:45:24.981</Modified>
     </AppxPackagedFile>
   </ItemGroup>
   <ItemGroup>

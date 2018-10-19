@@ -9,6 +9,8 @@ App.xbf
 MainPage.xbf
 SlowVMusic.xr.xml
 Views\HomePage.xbf
+Views\ProgressRing.xbf
+Views\SearchPage.xbf
 Media\remix.mp3
 Media\varus.mp4
 Properties\Default.rd.xml

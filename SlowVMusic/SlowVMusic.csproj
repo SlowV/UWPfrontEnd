@@ -96,6 +96,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Entity\ErrorResponse.cs" />
+    <Compile Include="Entity\GlobalFlySong.cs" />
     <Compile Include="Entity\Member.cs" />
     <Compile Include="Entity\Song.cs" />
     <Compile Include="Entity\TokenResponse.cs" />
@@ -108,6 +109,12 @@
     <Compile Include="Services\APIHandle.cs" />
     <Compile Include="Views\HomePage.xaml.cs">
       <DependentUpon>HomePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ProgressRing.xaml.cs">
+      <DependentUpon>ProgressRing.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SearchPage.xaml.cs">
+      <DependentUpon>SearchPage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -137,6 +144,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\HomePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ProgressRing.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SearchPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

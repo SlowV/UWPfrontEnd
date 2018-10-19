@@ -32,7 +32,7 @@ namespace SlowVMusic
             this.InitializeComponent();
             this.Suspending += OnSuspending;
 
-            //DataAccess.InitializeDatabase();
+            DataAccess.InitializeDatabase();
         }
 
         /// <summary>

@@ -13,8 +13,8 @@
         <Pivot>
             <PivotItem Header="Danh Sách">
                 <ScrollViewer>
-                    <ListView ItemsSource="{x:Bind ListSong, Mode=TwoWay}" x:Name="MenuList">
-                        <ListView.ItemTemplate>
+                    <ListView ItemsSource="{x:Bind testSong, Mode=TwoWay}" x:Name="Output">
+                        <ListView.ItemTemplate >
                             <DataTemplate x:DataType="entity:Song">
                                 <StackPanel Padding="12" Orientation="Horizontal" Tag="{Binding}" Tapped="StackPanel_Tapped" AutomationProperties.Name="{x:Bind name}">
                                     <Ellipse Height="77" Width="77">
@@ -31,7 +31,6 @@
                                                Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}" 
                                                Margin="0,7,0,0"/>
                                     </StackPanel>
-
                                 </StackPanel>
                             </DataTemplate>
                         </ListView.ItemTemplate>
@@ -40,7 +39,7 @@
             </PivotItem>
             <PivotItem Header="My Song">
                 <ScrollViewer>
-                    <ListView ItemsSource="{x:Bind mySong, Mode=TwoWay}" x:Name="MenuMyList">
+                    <ListView ItemsSource="{x:Bind mySong, Mode=TwoWay}" x:Name="MenuList" >
                         <ListView.ItemTemplate>
                             <DataTemplate x:DataType="entity:Song">
                                 <StackPanel Padding="12" Orientation="Horizontal" Tag="{Binding}" Tapped="StackPanel_Tapped" AutomationProperties.Name="{x:Bind name}">
@@ -58,7 +57,6 @@
                                                Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}" 
                                                Margin="0,7,0,0"/>
                                     </StackPanel>
-
                                 </StackPanel>
                             </DataTemplate>
                         </ListView.ItemTemplate>
@@ -67,7 +65,7 @@
             </PivotItem>
             <PivotItem Header="Upload">
                 <ScrollViewer>
-                    <StackPanel Margin="60,25">
+                    <StackPanel Margin="100,20">
                         <TextBox PlaceholderText="Nhập tên bài hát" Header="Tên bài hát" x:Name="Name"/>
                         <TextBox PlaceholderText="Ca sĩ thể hiện" Header="Ca sĩ" Margin="0,10,0,0" x:Name="Singer"/>
                         <TextBox PlaceholderText="Nhạc sĩ" Header="Nhạc sĩ" Margin="0,10,0,0" x:Name="Author"/>
@@ -83,14 +81,14 @@
                 </ScrollViewer>
             </PivotItem>
         </Pivot>
-        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Bottom" Visibility="Collapsed" Orientation="Horizontal" Background="#FFDEDEDE" Height="25" Margin="0,0,0,40" x:Name="NameSongPlaying">
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Bottom"  Orientation="Horizontal" Background="#FFDEDEDE" Height="25" Margin="0,0,0,40" x:Name="NameSongPlaying">
             <TextBlock>
                 Now Playing:
             </TextBlock>
             <TextBlock x:Name="NowPlaying" Margin="10,0,0,0">
             </TextBlock>
         </StackPanel>
-        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Bottom" Orientation="Horizontal" Background="#FFDEDEDE" Height="45" x:Name="ControlSongPlaying" Visibility="Collapsed">
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Bottom" Orientation="Horizontal" Background="#FFDEDEDE" Height="45" x:Name="ControlSongPlaying" >
             <AppBarSeparator/>
                 <TextBlock x:Name="MinDuration"/>
                 <ProgressBar x:Name="Progress" Height="15" Width="230"></ProgressBar>
@@ -99,6 +97,7 @@
             <AppBarButton Icon="Previous" Click="PlayBack" ToolTipService.ToolTip="Previous Song"/>
             <AppBarButton Icon="Play" Click="PlayClick" ToolTipService.ToolTip="Play/Pause Song" x:Name="PlayButton"/>
             <AppBarButton Icon="Next" Click="PlayNext" ToolTipService.ToolTip="Next Song"/>
+            <AppBarButton Icon="RepeatOne" Click="Repeat" ToolTipService.ToolTip="Reapeat One"/>
             <AppBarSeparator/>
             <Slider x:Name="VolumeSlider" Width="110" HorizontalAlignment="Center" VerticalAlignment="Center" Height="30" ValueChanged="VolumeSlider_ValueChanged" ToolTipService.ToolTip="Volume"/>
             <TextBlock x:Name="volume" Width="28" Height="20" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0" TextAlignment="Right">

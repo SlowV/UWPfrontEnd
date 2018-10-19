@@ -15,7 +15,7 @@
             <VisualStateGroup>
                 <VisualState>
                     <VisualState.StateTriggers>
-                        <AdaptiveTrigger x:ConnectionId='2'                                                                   />
+                        <AdaptiveTrigger x:ConnectionId='2'                                                             />
                     </VisualState.StateTriggers>
 
                     <VisualState.Setters>
@@ -24,12 +24,12 @@
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
-        <NavigationView x:ConnectionId='3' x:Name="nvTopLevelNav"
-                                             
+        <NavigationView x:ConnectionId='3' x:Name="NavView"
+                                       
                 Margin="0,12,0,0"
-                                                                 
-                                                       
-                IsTabStop="False">
+                                                 
+                IsTabStop="False"
+                IsSettingsVisible="False" IsPaneOpen="False">
             <NavigationView.MenuItems>
                 <NavigationViewItem Icon="Home" Tag="Home_Page">
                     <TextBlock Tag="Nav_Home">Trang chủ</TextBlock>
@@ -49,7 +49,7 @@
             </NavigationView.MenuItems>
             
             <NavigationView.AutoSuggestBox>
-                <AutoSuggestBox x:ConnectionId='4' x:Name="ASB" QueryIcon="Find"/>
+                <AutoSuggestBox x:ConnectionId='4' x:Name="search" QueryIcon="Find"                      />
             </NavigationView.AutoSuggestBox>
 
             <NavigationView.Header>
@@ -59,7 +59,7 @@
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Style="{StaticResource TitleTextBlockStyle}"
-                           FontSize="28"
+                           FontSize="25"
                            VerticalAlignment="Center"
                            Text="SlowV Music"/>
                     <CommandBar x:ConnectionId='5' Grid.Column="1"
@@ -73,15 +73,16 @@
                         <AppBarButton x:ConnectionId='7' x:Name="ShowUserInfo" Icon="Contact" Label="Thông tin">
                             <AppBarButton.Flyout>
                                 <MenuFlyout>
-                                    <MenuFlyoutItem x:ConnectionId='8' x:Name="InfoUser" Text="SlowV" />
-                                    <MenuFlyoutItem x:ConnectionId='9' x:Name="Logout" Text="Đăng xuất"                   />
+                                    <MenuFlyoutItem x:ConnectionId='8' x:Name="InfoUser" Text="SlowV"                  />
+                                    <MenuFlyoutItem x:ConnectionId='9' x:Name="SaveDB" Text="Save Song"                 />
+                                    <MenuFlyoutItem x:ConnectionId='10' x:Name="Logout" Text="Đăng xuất"                   />
                                 </MenuFlyout>
                             </AppBarButton.Flyout>
                         </AppBarButton>
                     </CommandBar>
                 </Grid>
             </NavigationView.Header>
-            <Frame x:ConnectionId='10' x:Name="contentFrame"/>
+            <Frame x:ConnectionId='11' x:Name="ContentFrame"/>
         </NavigationView>
     </Grid>
 </Page>

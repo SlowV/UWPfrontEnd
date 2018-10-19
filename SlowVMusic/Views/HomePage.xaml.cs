@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Data.Sqlite;
+using Newtonsoft.Json;
 using SlowVMusic.Entity;
 using SlowVMusic.Model;
 using SlowVMusic.Services;
@@ -37,6 +38,7 @@ namespace SlowVMusic.Views
         //internal ObservableCollection<Song> ListSong { get => listSong; set => listSong = value; }
         private ObservableCollection<Song> ListSong = new ObservableCollection<Song>();
         private ObservableCollection<Song> mySong = new ObservableCollection<Song>();
+        private ObservableCollection<Song> testSong = new ObservableCollection<Song>();
         private static List<Song> lstSong;
 
         private bool isPlaying = false;
@@ -54,6 +56,26 @@ namespace SlowVMusic.Views
             _timer.Interval = TimeSpan.FromMilliseconds(1000);
             _timer.Tick += ticktock;
             _timer.Start();
+
+            List<Song> i = Get_Song_InDB();
+
+            if (i != null)
+            {
+                foreach (var item in i)
+                {
+                    testSong.Add(new Song {
+                        id = item.id,
+                        name = item.name,
+                        description = item.description,
+                        singer = item.singer,
+                        author = item.author,
+                        thumbnail = item.thumbnail,
+                        link = item.link
+                    });
+                }
+            }
+
+
         }
 
         private async void AddSong(object sender, RoutedEventArgs e)
@@ -83,6 +105,7 @@ namespace SlowVMusic.Views
             currentSong.memberId = userInfoJson.id;
 
             string content = await APIHandle.Create_Song(this.currentSong);
+            // đến đây là đã có mp3 đã lên rồi.
             Song songContent = JsonConvert.DeserializeObject<Song>(content);
             mySong.Add(new Song
             {
@@ -208,8 +231,8 @@ namespace SlowVMusic.Views
             }
             else
             {
-                NameSongPlaying.Visibility = Visibility.Collapsed;
-                ControlSongPlaying.Visibility = Visibility.Collapsed;
+                NameSongPlaying.Visibility = Visibility.Visible;
+                ControlSongPlaying.Visibility = Visibility.Visible;
             }
         }
 
@@ -220,6 +243,16 @@ namespace SlowVMusic.Views
             Progress.Maximum = MediaPlayer.NaturalDuration.TimeSpan.TotalSeconds;
             MaxDuration.Text = MediaPlayer.NaturalDuration.TimeSpan.Minutes + ":" + MediaPlayer.NaturalDuration.TimeSpan.Seconds;
             Progress.Value = MediaPlayer.Position.TotalSeconds;
+            if (isPlaying == false)
+            {
+                NameSongPlaying.Visibility = Visibility.Collapsed;
+                ControlSongPlaying.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                NameSongPlaying.Visibility = Visibility.Visible;
+                ControlSongPlaying.Visibility = Visibility.Visible;
+            }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -231,7 +264,7 @@ namespace SlowVMusic.Views
         {
             StackPanel panel = sender as StackPanel;
             Song selectedSong = panel.Tag as Song;
-            Debug.WriteLine(ListSong[0].name);
+            Debug.WriteLine("Đã tap vô nghe nhạc");
             onPlay = MenuList.SelectedIndex;
             LoadSong(selectedSong);
             PlaySong();
@@ -290,7 +323,7 @@ namespace SlowVMusic.Views
             PlaySong();
             MenuList.SelectedIndex = onPlay;
         }
-        private void LoadSong(Entity.Song currentSong)
+        private void LoadSong(Song currentSong)
         {
             this.NowPlaying.Text = "Loading";
             MediaPlayer.Source = new Uri(currentSong.link);
@@ -316,6 +349,50 @@ namespace SlowVMusic.Views
                 MediaPlayer.Volume = vol.Value / 100;
                 this.volume.Text = vol.Value.ToString();
             }
+        }
+
+        private static List<Song> Get_Song_InDB()
+        {
+            lstSong = new List<Song>();
+            using (SqliteConnection db =
+                new SqliteConnection("Filename=slowvmusic.db"))
+            {
+                db.Open();
+
+                SqliteCommand selectCommand = new SqliteCommand
+                    ("SELECT * from Song", db);
+
+                SqliteDataReader query = selectCommand.ExecuteReader();
+
+                while (query.Read())
+                {
+                    int id = query.GetInt32(0);
+                    String name = query.GetString(1);
+                    String description = query.GetString(2);
+                    String singer = query.GetString(3);
+                    String author = query.GetString(4);
+                    String thumbnail = query.GetString(5);
+                    String link = query.GetString(6);
+
+                    lstSong.Add(new Song {
+                        id = id,
+                        name = name,
+                        description = description,
+                        singer = singer,
+                        author = author,
+                        thumbnail = thumbnail,
+                        link = link
+                    });
+                }
+
+                db.Close();
+            }
+            return lstSong;
+        }
+
+        private void Repeat(object sender, RoutedEventArgs e)
+        {
+            MediaPlayer.IsLooping = true;
         }
     }
 

@@ -13,25 +13,24 @@
         <Pivot>
             <PivotItem Header="Danh Sách">
                 <ScrollViewer>
-                    <ListView x:ConnectionId='28'                                              x:Name="MenuList">
-                        <ListView.ItemTemplate>
+                    <ListView x:ConnectionId='29'                                              x:Name="Output">
+                        <ListView.ItemTemplate >
                             <DataTemplate                         >
-                                <StackPanel x:ConnectionId='29' Padding="12" Orientation="Horizontal" Tag="{Binding}"                                                                     >
+                                <StackPanel x:ConnectionId='30' Padding="12" Orientation="Horizontal" Tag="{Binding}"                                                                     >
                                     <Ellipse Height="77" Width="77">
                                         <Ellipse.Fill>
-                                            <ImageBrush x:ConnectionId='32'                                 />
+                                            <ImageBrush x:ConnectionId='33'                                 />
                                         </Ellipse.Fill>
                                     </Ellipse>
                                     <StackPanel Margin="24,12,0,0">
-                                        <TextBlock x:ConnectionId='30'                      VerticalAlignment="Center" 
+                                        <TextBlock x:ConnectionId='31'                      VerticalAlignment="Center" 
                                                Style="{ThemeResource BaseTextBlockStyle}" 
                                                Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}"
                                                 Margin="0,0,0,0"/>
-                                        <TextBlock x:ConnectionId='31'                        VerticalAlignment="Center"                                                
+                                        <TextBlock x:ConnectionId='32'                        VerticalAlignment="Center"                                                
                                                Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}" 
                                                Margin="0,7,0,0"/>
                                     </StackPanel>
-
                                 </StackPanel>
                             </DataTemplate>
                         </ListView.ItemTemplate>
@@ -40,25 +39,24 @@
             </PivotItem>
             <PivotItem Header="My Song">
                 <ScrollViewer>
-                    <ListView x:ConnectionId='23'                                            x:Name="MenuMyList">
+                    <ListView x:ConnectionId='24'                                            x:Name="MenuList" >
                         <ListView.ItemTemplate>
                             <DataTemplate                         >
-                                <StackPanel x:ConnectionId='24' Padding="12" Orientation="Horizontal" Tag="{Binding}"                                                                     >
+                                <StackPanel x:ConnectionId='25' Padding="12" Orientation="Horizontal" Tag="{Binding}"                                                                     >
                                     <Ellipse Height="77" Width="77">
                                         <Ellipse.Fill>
-                                            <ImageBrush x:ConnectionId='27'                                 />
+                                            <ImageBrush x:ConnectionId='28'                                 />
                                         </Ellipse.Fill>
                                     </Ellipse>
                                     <StackPanel Margin="24,12,0,0">
-                                        <TextBlock x:ConnectionId='25'                      VerticalAlignment="Center" 
+                                        <TextBlock x:ConnectionId='26'                      VerticalAlignment="Center" 
                                                Style="{ThemeResource BaseTextBlockStyle}" 
                                                Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}"
                                                 Margin="0,0,0,0"/>
-                                        <TextBlock x:ConnectionId='26'                        VerticalAlignment="Center"                                                
+                                        <TextBlock x:ConnectionId='27'                        VerticalAlignment="Center"                                                
                                                Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}" 
                                                Margin="0,7,0,0"/>
                                     </StackPanel>
-
                                 </StackPanel>
                             </DataTemplate>
                         </ListView.ItemTemplate>
@@ -67,30 +65,30 @@
             </PivotItem>
             <PivotItem Header="Upload">
                 <ScrollViewer>
-                    <StackPanel Margin="60,25">
-                        <TextBox x:ConnectionId='14' PlaceholderText="Nhập tên bài hát" Header="Tên bài hát" x:Name="Name"/>
-                        <TextBox x:ConnectionId='15' PlaceholderText="Ca sĩ thể hiện" Header="Ca sĩ" Margin="0,10,0,0" x:Name="Singer"/>
-                        <TextBox x:ConnectionId='16' PlaceholderText="Nhạc sĩ" Header="Nhạc sĩ" Margin="0,10,0,0" x:Name="Author"/>
-                        <TextBox x:ConnectionId='17' PlaceholderText="Thông tin bài hát" Header="Thông tin" Margin="0,10,0,0" x:Name="Description"/>
-                        <TextBox x:ConnectionId='18' PlaceholderText="Ảnh bài hát" Header="Ảnh" Margin="0,10,0,0" x:Name="Thumbnail"/>
-                        <TextBox x:ConnectionId='19' PlaceholderText="Link bài hát" Header="Link mp3" Margin="0,10,0,0" x:Name="Link"/>
+                    <StackPanel Margin="100,20">
+                        <TextBox x:ConnectionId='15' PlaceholderText="Nhập tên bài hát" Header="Tên bài hát" x:Name="Name"/>
+                        <TextBox x:ConnectionId='16' PlaceholderText="Ca sĩ thể hiện" Header="Ca sĩ" Margin="0,10,0,0" x:Name="Singer"/>
+                        <TextBox x:ConnectionId='17' PlaceholderText="Nhạc sĩ" Header="Nhạc sĩ" Margin="0,10,0,0" x:Name="Author"/>
+                        <TextBox x:ConnectionId='18' PlaceholderText="Thông tin bài hát" Header="Thông tin" Margin="0,10,0,0" x:Name="Description"/>
+                        <TextBox x:ConnectionId='19' PlaceholderText="Ảnh bài hát" Header="Ảnh" Margin="0,10,0,0" x:Name="Thumbnail"/>
+                        <TextBox x:ConnectionId='20' PlaceholderText="Link bài hát" Header="Link mp3" Margin="0,10,0,0" x:Name="Link"/>
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
-                            <ProgressRing x:ConnectionId='20' IsActive="False" x:Name="ProgressRing" Visibility="Collapsed" Background="Transparent" Margin="20, 0, 0, 0"/>
-                            <TextBlock x:ConnectionId='21' x:Name="SongLoading" Text="Đang upload ...." Visibility="Collapsed" Foreground="#E74856" FontSize="12px;" Margin="10, 20, 0, 0"/>
-                            <Button x:ConnectionId='22' Content="Upload bài hát"  Margin="200,10" Style="{Binding Source={StaticResource myButtonPrimary}}"                />
+                            <ProgressRing x:ConnectionId='21' IsActive="False" x:Name="ProgressRing" Visibility="Collapsed" Background="Transparent" Margin="20, 0, 0, 0"/>
+                            <TextBlock x:ConnectionId='22' x:Name="SongLoading" Text="Đang upload ...." Visibility="Collapsed" Foreground="#E74856" FontSize="12px;" Margin="10, 20, 0, 0"/>
+                            <Button x:ConnectionId='23' Content="Upload bài hát"  Margin="200,10" Style="{Binding Source={StaticResource myButtonPrimary}}"                />
                         </StackPanel>
                     </StackPanel>
                 </ScrollViewer>
             </PivotItem>
         </Pivot>
-        <StackPanel x:ConnectionId='2' HorizontalAlignment="Center" VerticalAlignment="Bottom" Visibility="Collapsed" Orientation="Horizontal" Background="#FFDEDEDE" Height="25" Margin="0,0,0,40" x:Name="NameSongPlaying">
+        <StackPanel x:ConnectionId='2' HorizontalAlignment="Center" VerticalAlignment="Bottom"  Orientation="Horizontal" Background="#FFDEDEDE" Height="25" Margin="0,0,0,40" x:Name="NameSongPlaying">
             <TextBlock>
                 Now Playing:
             </TextBlock>
-            <TextBlock x:ConnectionId='13' x:Name="NowPlaying" Margin="10,0,0,0">
+            <TextBlock x:ConnectionId='14' x:Name="NowPlaying" Margin="10,0,0,0">
             </TextBlock>
         </StackPanel>
-        <StackPanel x:ConnectionId='3' HorizontalAlignment="Center" VerticalAlignment="Bottom" Orientation="Horizontal" Background="#FFDEDEDE" Height="45" x:Name="ControlSongPlaying" Visibility="Collapsed">
+        <StackPanel x:ConnectionId='3' HorizontalAlignment="Center" VerticalAlignment="Bottom" Orientation="Horizontal" Background="#FFDEDEDE" Height="45" x:Name="ControlSongPlaying" >
             <AppBarSeparator/>
                 <TextBlock x:ConnectionId='5' x:Name="MinDuration"/>
                 <ProgressBar x:ConnectionId='6' x:Name="Progress" Height="15" Width="230"></ProgressBar>
@@ -99,9 +97,10 @@
             <AppBarButton x:ConnectionId='8' Icon="Previous"                  ToolTipService.ToolTip="Previous Song"/>
             <AppBarButton x:ConnectionId='9' Icon="Play"                   ToolTipService.ToolTip="Play/Pause Song" x:Name="PlayButton"/>
             <AppBarButton x:ConnectionId='10' Icon="Next"                  ToolTipService.ToolTip="Next Song"/>
+            <AppBarButton x:ConnectionId='11' Icon="RepeatOne"                ToolTipService.ToolTip="Reapeat One"/>
             <AppBarSeparator/>
-            <Slider x:ConnectionId='11' x:Name="VolumeSlider" Width="110" HorizontalAlignment="Center" VerticalAlignment="Center" Height="30"                                          ToolTipService.ToolTip="Volume"/>
-            <TextBlock x:ConnectionId='12' x:Name="volume" Width="28" Height="20" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0" TextAlignment="Right">
+            <Slider x:ConnectionId='12' x:Name="VolumeSlider" Width="110" HorizontalAlignment="Center" VerticalAlignment="Center" Height="30"                                          ToolTipService.ToolTip="Volume"/>
+            <TextBlock x:ConnectionId='13' x:Name="volume" Width="28" Height="20" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0" TextAlignment="Right">
                 100
             </TextBlock>
             <TextBlock Width="13" Height="20">
