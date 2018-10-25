@@ -7,48 +7,32 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.Media.Capture;
 using Windows.Storage;
-using System.Net.Http;
-using Windows.Storage.Pickers;
-using Windows.Storage.Provider;
 using Windows.System;
-using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Media.Imaging;
-using Windows.UI.Xaml.Navigation;
-using Windows.Web.Http;
-using MUXC = Microsoft.UI.Xaml.Controls;
 using HttpClient = System.Net.Http.HttpClient;
 using HttpResponseMessage = System.Net.Http.HttpResponseMessage;
-using Windows.UI.Popups;
-using Windows.Foundation.Metadata;
 using Microsoft.Data.Sqlite;
+using TextBlock = Windows.UI.Xaml.Controls.TextBlock;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
 namespace SlowVMusic
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
+     
     public sealed partial class MainPage : Page
     {
         private static Member currentLogin;
         private Member currentMember;
         private static StorageFile file;
         private static string UploadUrl;
-        private static bool isLogin = false;
+        public static bool isLogin = false;
         private static List<Song> lstSong;
 
         public MainPage()
@@ -56,9 +40,25 @@ namespace SlowVMusic
             GetUploadUrl();
             this.currentMember = new Member();
             this.InitializeComponent();
+            DispatcherTimer _timer = new DispatcherTimer();
+            _timer.Interval = TimeSpan.FromMilliseconds(1000);
+            _timer.Tick += ChangeUI;
+            _timer.Start();
         }
 
-
+        private void ChangeUI(object sender, object e)
+        {
+            if (GlobalFlySong._isLogin)
+            {
+                ShowUserInfo.Visibility = Visibility.Visible;
+                ShowLoginButton.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                ShowUserInfo.Visibility = Visibility.Collapsed;
+                ShowLoginButton.Visibility = Visibility.Visible;
+            }
+        }
 
         ContentDialog dialogLogin = new ContentDialog();
         ContentDialog dialogRegister;
@@ -136,6 +136,8 @@ namespace SlowVMusic
                     AppBarButton app2 = appbarinfo as AppBarButton;
                     app1.Visibility = Visibility.Collapsed;
                     app2.Visibility = Visibility.Visible;
+
+                    GlobalFlySong._isLogin = true;
                 }
                 else
                 {
@@ -191,6 +193,15 @@ namespace SlowVMusic
                 Margin = new Thickness(50, 5, 50, 10),
                 PlaceholderText = "Email của bạn.",
             };
+            // Tạo input tài khoản. 
+            var emailValid = new TextBlock
+            {
+                Name = "email",
+                Margin = new Thickness(50, 5, 50, 10),
+                Visibility = Visibility.Collapsed,
+                FontSize = 12,
+                Text = "Email không được để trống hoặc phải lớn hơn 5 ký tự!"
+            };
 
             // Tạo input pass. 
             var textBoxPass = new PasswordBox
@@ -199,6 +210,15 @@ namespace SlowVMusic
                 Name = "Password",
                 Margin = new Thickness(50, 5, 50, 10),
                 PlaceholderText = "Mật khẩu của bạn.",
+            };
+
+            var passValid = new TextBlock
+            {
+                Name = "password",
+                Margin = new Thickness(50, 5, 50, 10),
+                Visibility = Visibility.Collapsed,
+                FontSize = 12,
+                Text = "Mật khẩu không được để trống hoặc phải lớn hơn 5 ký tự!"
             };
 
             // Tạo mới link sang page đăng nhập
@@ -221,6 +241,14 @@ namespace SlowVMusic
                 PlaceholderText = "Họ của bạn.",
                 Margin = new Thickness(50, 5, 50, 10),
             };
+            var firstnameValid = new TextBlock
+            {
+                Name = "firstName",
+                Margin = new Thickness(50, 5, 50, 10),
+                Visibility = Visibility.Collapsed,
+                FontSize = 12,
+                Text = "Họ không được để trống "
+            };
 
             // Tạo input lastName. 
             var lastName = new TextBox
@@ -229,6 +257,15 @@ namespace SlowVMusic
                 Name = "LastName",
                 PlaceholderText = "Tên của bạn.",
                 Margin = new Thickness(50, 5, 50, 10),
+            };
+
+            var lastnameValid = new TextBlock
+            {
+                Name = "lastName",
+                Margin = new Thickness(50, 5, 50, 10),
+                Visibility = Visibility.Collapsed,
+                FontSize = 12,
+                Text = "tên không được để trống"
             };
 
             //input image Url.
@@ -275,6 +312,15 @@ namespace SlowVMusic
                 PlaceholderText = "Số điện thoại của bạn."
             };
 
+            var phoneValid = new TextBlock
+            {
+                Name = "phone",
+                Margin = new Thickness(50, 5, 50, 10),
+                Visibility = Visibility.Collapsed,
+                FontSize = 12,
+                Text = "Số điện thoại không được để trống!"
+            };
+
             var address = new TextBox
             {
                 Header = "Địa chỉ",
@@ -282,6 +328,15 @@ namespace SlowVMusic
                 Name = "Address",
                 AcceptsReturn = true,
                 PlaceholderText = "Địa chỉ của bạn."
+            };
+
+            var addressValid = new TextBlock
+            {
+                Name = "address",
+                Margin = new Thickness(50, 5, 50, 10),
+                Visibility = Visibility.Collapsed,
+                FontSize = 12,
+                Text = "Địa chỉ không được để trống!"
             };
 
             var introduction = new TextBox
@@ -346,13 +401,19 @@ namespace SlowVMusic
 
             // add giao diện vào layout.
             stackPanel.Children.Add(textBoxName);
+            stackPanel.Children.Add(emailValid);
             stackPanel.Children.Add(textBoxPass);
+            stackPanel.Children.Add(passValid);
             stackPanel.Children.Add(firstName);
+            stackPanel.Children.Add(firstnameValid);
             stackPanel.Children.Add(lastName);
+            stackPanel.Children.Add(lastnameValid);
             stackPanel.Children.Add(url_ImageRegister);
             stackPanel.Children.Add(stackPanelAvatar);
             stackPanel.Children.Add(phone);
+            stackPanel.Children.Add(phoneValid);
             stackPanel.Children.Add(address);
+            stackPanel.Children.Add(addressValid);
             stackPanel.Children.Add(textBlockGender);
             stackPanel.Children.Add(stackPanelGender);
             stackPanel.Children.Add(birthDay);
@@ -398,12 +459,41 @@ namespace SlowVMusic
                     ErrorResponse errResponse = JsonConvert.DeserializeObject<ErrorResponse>(errorJson);
                     foreach (var errorField in errResponse.error.Keys)
                     {
-                        TextBlock textBlock = this.FindName(errorField) as TextBlock;
-                        textBlock.Text = errResponse.error[errorField];
+                        if (emailValid.Name == errorField)
+                        {
+                            emailValid.Text = errResponse.error[errorField];
+                            emailValid.Visibility = Visibility.Visible;
+                        }
+                        else if (passValid.Name == errorField)
+                        {
+                            passValid.Text = errResponse.error[errorField];
+                            passValid.Visibility = Visibility.Visible;
+                        }
+                        else if (firstnameValid.Name == errorField)
+                        {
+                            firstnameValid.Text = errResponse.error[errorField];
+                            firstnameValid.Visibility = Visibility.Visible;
+                        }
+                        else if (lastName.Name == errorField)
+                        {
+                            lastName.Text = errResponse.error[errorField];
+                            lastName.Visibility = Visibility.Visible;
+                        }
+                        else if (addressValid.Name == errorField)
+                        {
+                            addressValid.Text = errResponse.error[errorField];
+                            addressValid.Visibility = Visibility.Visible;
+                        }
+                        else if (phoneValid.Name == errorField)
+                        {
+                            phoneValid.Text = errResponse.error[errorField];
+                            phoneValid.Visibility = Visibility.Visible;
+                        }
+
                     }
                 }
                 await Task.Delay(3000);  //Here I just wait 3 seconds
-                // Xu ly nut dang nhap ben trong nay.
+                                         // Xu ly nut dang nhap ben trong nay.
                 deferral.Complete();
             };
 
@@ -560,7 +650,7 @@ namespace SlowVMusic
                 currentLogin.updatedAt = userInfoJson.updatedAt;
                 currentLogin.status = userInfoJson.status;
 
-                isLogin = true;
+                GlobalFlySong._isLogin = true;
             }
             else
             {
@@ -878,7 +968,7 @@ namespace SlowVMusic
             List<Song> i = await Get_List_Song();
             foreach (var item in i)
             {
-                if(item.description == null)
+                if (item.description == null)
                 {
                     Song.id = item.id;
                     Song.name = item.name;
@@ -915,24 +1005,22 @@ namespace SlowVMusic
                 insertCommand.CommandText = "INSERT OR REPLACE INTO Song VALUES ( COALESCE((SELECT id FROM Song WHERE id = @id), @id), @name, @description, @singer, @author, @thumbnail, @link);";
                 insertCommand.Parameters.AddWithValue("@id", song.id);
                 insertCommand.Parameters.AddWithValue("@name", song.name);
-                insertCommand.Parameters.AddWithValue("@description",song.description);
+                insertCommand.Parameters.AddWithValue("@description", song.description);
                 insertCommand.Parameters.AddWithValue("@singer", song.singer);
                 insertCommand.Parameters.AddWithValue("@author", song.author);
                 insertCommand.Parameters.AddWithValue("@thumbnail", song.thumbnail);
                 insertCommand.Parameters.AddWithValue("@link", song.link);
-
-
                 insertCommand.ExecuteReader();
-
                 db.Close();
             }
-
         }
 
-        private async void KeyDownSearch(object sender, KeyRoutedEventArgs e)
+        public void KeyDownSearch(object sender, KeyRoutedEventArgs e)
         {
             List<Song> i = Model.SongModel.Search(search.Text);
             ContentFrame.Navigate(typeof(Views.SearchPage), i);
         }
+
+        // Check UI Main
     }
 }

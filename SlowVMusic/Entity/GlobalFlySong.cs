@@ -10,6 +10,8 @@ namespace SlowVMusic.Entity
     {
         private static Song globalSong;
 
+        public static bool _isLogin = false;
+
         internal static Song GlobalSong { get => globalSong; set => globalSong = value; }
     }
 }

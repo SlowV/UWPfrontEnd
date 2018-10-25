@@ -14,6 +14,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Media.Core;
 using Windows.Storage;
 using Windows.UI;
 using Windows.UI.Xaml;
@@ -22,6 +23,7 @@ using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
@@ -41,20 +43,14 @@ namespace SlowVMusic.Views
         private ObservableCollection<Song> testSong = new ObservableCollection<Song>();
         private static List<Song> lstSong;
 
-        private bool isPlaying = false;
-
-        int onPlay = 0;
-
-        TimeSpan _position;
 
         DispatcherTimer _timer = new DispatcherTimer();
         public HomePage()
         {
             currentSong = new Song();
             this.InitializeComponent();
-            this.VolumeSlider.Value = 100;
             _timer.Interval = TimeSpan.FromMilliseconds(1000);
-            _timer.Tick += ticktock;
+            _timer.Tick += ChangeUI;
             _timer.Start();
 
             List<Song> i = Get_Song_InDB();
@@ -63,7 +59,8 @@ namespace SlowVMusic.Views
             {
                 foreach (var item in i)
                 {
-                    testSong.Add(new Song {
+                    testSong.Add(new Song
+                    {
                         id = item.id,
                         name = item.name,
                         description = item.description,
@@ -76,6 +73,18 @@ namespace SlowVMusic.Views
             }
 
 
+        }
+
+        private void ChangeUI(object sender, object e)
+        {
+            if (GlobalFlySong._isLogin)
+            {
+                itemUploadSong.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                itemUploadSong.Visibility = Visibility.Collapsed;
+            }
         }
 
         private async void AddSong(object sender, RoutedEventArgs e)
@@ -105,7 +114,51 @@ namespace SlowVMusic.Views
             currentSong.memberId = userInfoJson.id;
 
             string content = await APIHandle.Create_Song(this.currentSong);
+            Debug.WriteLine(content);
             // đến đây là đã có mp3 đã lên rồi.
+            //if (content.Result.StatusCode == System.Net.HttpStatusCode.Created)
+            //{
+            //    Debug.WriteLine("Success");
+            //}
+            //else
+            //{
+            //    var errorJson = await httpResponseMessage.Result.Content.ReadAsStringAsync();
+            //    ErrorResponse errResponse = JsonConvert.DeserializeObject<ErrorResponse>(errorJson);
+            //    foreach (var errorField in errResponse.error.Keys)
+            //    {
+            //        if (emailValid.Name == errorField)
+            //        {
+            //            emailValid.Text = errResponse.error[errorField];
+            //            emailValid.Visibility = Visibility.Visible;
+            //        }
+            //        else if (passValid.Name == errorField)
+            //        {
+            //            passValid.Text = errResponse.error[errorField];
+            //            passValid.Visibility = Visibility.Visible;
+            //        }
+            //        else if (firstnameValid.Name == errorField)
+            //        {
+            //            firstnameValid.Text = errResponse.error[errorField];
+            //            firstnameValid.Visibility = Visibility.Visible;
+            //        }
+            //        else if (lastName.Name == errorField)
+            //        {
+            //            lastName.Text = errResponse.error[errorField];
+            //            lastName.Visibility = Visibility.Visible;
+            //        }
+            //        else if (addressValid.Name == errorField)
+            //        {
+            //            addressValid.Text = errResponse.error[errorField];
+            //            addressValid.Visibility = Visibility.Visible;
+            //        }
+            //        else if (phoneValid.Name == errorField)
+            //        {
+            //            phoneValid.Text = errResponse.error[errorField];
+            //            phoneValid.Visibility = Visibility.Visible;
+            //        }
+
+            //    }
+            //}
             Song songContent = JsonConvert.DeserializeObject<Song>(content);
             mySong.Add(new Song
             {
@@ -209,7 +262,7 @@ namespace SlowVMusic.Views
                 }
             };
             List<Song> j = await Get_My_Song();
-            if(j != null)
+            if (j != null)
             {
                 foreach (var item in j)
                 {
@@ -224,35 +277,6 @@ namespace SlowVMusic.Views
                     });
                 }
             }
-            if (isPlaying == false)
-            {
-                NameSongPlaying.Visibility = Visibility.Collapsed;
-                ControlSongPlaying.Visibility = Visibility.Collapsed;
-            }
-            else
-            {
-                NameSongPlaying.Visibility = Visibility.Visible;
-                ControlSongPlaying.Visibility = Visibility.Visible;
-            }
-        }
-
-        private void ticktock(object sender, object e)
-        {
-            MinDuration.Text = MediaPlayer.Position.Minutes + ":" + MediaPlayer.Position.Seconds;
-            Progress.Minimum = 0;
-            Progress.Maximum = MediaPlayer.NaturalDuration.TimeSpan.TotalSeconds;
-            MaxDuration.Text = MediaPlayer.NaturalDuration.TimeSpan.Minutes + ":" + MediaPlayer.NaturalDuration.TimeSpan.Seconds;
-            Progress.Value = MediaPlayer.Position.TotalSeconds;
-            if (isPlaying == false)
-            {
-                NameSongPlaying.Visibility = Visibility.Collapsed;
-                ControlSongPlaying.Visibility = Visibility.Collapsed;
-            }
-            else
-            {
-                NameSongPlaying.Visibility = Visibility.Visible;
-                ControlSongPlaying.Visibility = Visibility.Visible;
-            }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -262,95 +286,40 @@ namespace SlowVMusic.Views
 
         private void StackPanel_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            StackPanel panel = sender as StackPanel;
-            Song selectedSong = panel.Tag as Song;
-            Debug.WriteLine("Đã tap vô nghe nhạc");
-            onPlay = MenuList.SelectedIndex;
-            LoadSong(selectedSong);
-            PlaySong();
-        }
-        private void PlaySong()
-        {
-            MediaPlayer.Play();
-            PlayButton.Icon = new SymbolIcon(Symbol.Pause);
-            isPlaying = true;
-        }
-        private void PauseSong()
-        {
-            MediaPlayer.Pause();
-            PlayButton.Icon = new SymbolIcon(Symbol.Play);
-            isPlaying = false;
-        }
-        private void PlayClick(object sender, RoutedEventArgs e)
-        {
-            if (isPlaying)
-            {
-                PauseSong();
-            }
-            else
-            {
-                PlaySong();
-            }
-        }
-        private void PlayBack(object sender, RoutedEventArgs e)
-        {
-            MediaPlayer.Stop();
-            if (onPlay > 0)
-            {
-                onPlay = onPlay - 1;
-            }
-            else
-            {
-                onPlay = ListSong.Count - 1;
-            }
-            LoadSong(ListSong[onPlay]);
-            PlaySong();
-            MenuList.SelectedIndex = onPlay;
-        }
+            //StackPanel panel = sender as StackPanel;
+            //Song selectedSong = panel.Tag as Song;
+            //Debug.WriteLine("Đã tap vô nghe nhạc");
+            //onPlay = MenuList.SelectedIndex;
+            //LoadSong(selectedSong);
+            //PlaySong();
+            // Đi thẳng vào MainPage và thích móc gì thì móc
 
-        private void PlayNext(object sender, RoutedEventArgs e)
-        {
-            MediaPlayer.Stop();
-            if (onPlay < ListSong.Count - 1)
-            {
-                onPlay = onPlay + 1;
-            }
-            else
-            {
-                onPlay = 0;
-            }
-            LoadSong(ListSong[onPlay]);
-            PlaySong();
-            MenuList.SelectedIndex = onPlay;
-        }
-        private void LoadSong(Song currentSong)
-        {
-            this.NowPlaying.Text = "Loading";
-            MediaPlayer.Source = new Uri(currentSong.link);
-            Debug.WriteLine(MediaPlayer.NaturalDuration.TimeSpan.TotalSeconds);
-            this.NowPlaying.Text = currentSong.name + " - " + currentSong.singer;
-        }
-        private void Timer_Tick(object sender, EventArgs e)
-        {
-            if (MediaPlayer.Source != null && MediaPlayer.NaturalDuration.HasTimeSpan)
-            {
-                Progress.Minimum = 0;
-                Progress.Maximum = MediaPlayer.NaturalDuration.TimeSpan.TotalSeconds;
-                Progress.Value = MediaPlayer.Position.TotalSeconds;
 
-            }
-        }
+            var stackObject = sender as StackPanel;
+            Song dataSong = stackObject.Tag as Song;
 
-        private void VolumeSlider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
-        {
-            Slider vol = sender as Slider;
-            if (vol != null)
+            var frame = Window.Current.Content as Frame;
+            var currentPage = frame.Content as Page;
+            var stackPanel = currentPage.FindName("PanelMedia");
+            var imageFindName = currentPage.FindName("imageSong");
+            var titleSongFindName = currentPage.FindName("titleSong");
+            var myMediaFindName = currentPage.FindName("MyMedia");
+            var myMedia = myMediaFindName as MediaPlayerElement;
+
+            myMedia.Source = MediaSource.CreateFromUri(new Uri(dataSong.link));
+            myMedia.AutoPlay = true;
+            var stack = stackPanel as StackPanel;
+            var imageBrush = imageFindName as ImageBrush;
+            var titleSongTextBlock = titleSongFindName as TextBlock;
+            titleSongTextBlock.Text = dataSong.name;
+            
+            if (stack != null)
             {
-                MediaPlayer.Volume = vol.Value / 100;
-                this.volume.Text = vol.Value.ToString();
+                stack.Visibility = Visibility.Visible;
             }
-        }
+            imageBrush.ImageSource = new BitmapImage(new Uri(dataSong.thumbnail));
 
+        }
         private static List<Song> Get_Song_InDB()
         {
             lstSong = new List<Song>();
@@ -374,7 +343,8 @@ namespace SlowVMusic.Views
                     String thumbnail = query.GetString(5);
                     String link = query.GetString(6);
 
-                    lstSong.Add(new Song {
+                    lstSong.Add(new Song
+                    {
                         id = id,
                         name = name,
                         description = description,
@@ -390,10 +360,6 @@ namespace SlowVMusic.Views
             return lstSong;
         }
 
-        private void Repeat(object sender, RoutedEventArgs e)
-        {
-            MediaPlayer.IsLooping = true;
-        }
     }
 
 }

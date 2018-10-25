@@ -9,6 +9,23 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" 
     Loaded="OnPageLoaded">
 
+    <Page.Resources>
+        <!-- Storyboard resource: Animates a rectangle's opacity. -->
+        <Storyboard x:Name="myStoryboard">
+            <DoubleAnimation
+                Storyboard.TargetName="imageSong"
+                Storyboard.TargetProperty="Opacity"
+                From="1.0" To="0.0" Duration="0:0:1"/>
+        </Storyboard>
+        <Storyboard x:Key="Storyboard" BeginTime="00:00:00.000" Duration="00:00:10.000">
+            <DoubleAnimation Storyboard.TargetName="imageSong" 
+                             Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)" 
+                             From="0" To="360" BeginTime="00:00:05.000" Duration="00:00:05.000" />
+            <DoubleAnimation Storyboard.TargetName="OpacityImage" 
+                             Storyboard.TargetProperty="Opacity" 
+                             From="1" To="0" Duration="00:00:10.000" />
+        </Storyboard>
+    </Page.Resources>
 
     <Grid>
         <VisualStateManager.VisualStateGroups>
@@ -84,5 +101,30 @@
             </NavigationView.Header>
             <Frame x:Name="ContentFrame"/>
         </NavigationView>
+        <StackPanel x:Name="PanelMedia" VerticalAlignment="Bottom"  Height="100" Orientation="Horizontal" Background="CornflowerBlue" Visibility="Collapsed">
+            <StackPanel HorizontalAlignment="Center" Width="200" VerticalAlignment="Center">
+                <Ellipse Grid.Column="0" HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Stretch" Height="70" Width="70">
+                    <Ellipse.Fill>
+                        <ImageBrush  x:Name="imageSong" ImageSource="https://i.pinimg.com/564x/3d/44/82/3d4482e351ea1c20e6786b5c8b638c3f.jpg" Stretch="UniformToFill">
+
+                        </ImageBrush>
+                    </Ellipse.Fill>
+                </Ellipse>
+                <TextBlock Text="Tinh la xot xa" x:Name="titleSong" Width="200" TextAlignment="Center"/>
+            </StackPanel>
+            <MediaPlayerElement x:Name="MyMedia" AreTransportControlsEnabled="True" Width="1080" Height="100">
+                <MediaPlayerElement.TransportControls>
+                    <MediaTransportControls 
+                     IsSkipBackwardButtonVisible="True"
+                        IsSkipForwardButtonVisible="True"
+                        IsSkipBackwardEnabled="True"
+                        IsSkipForwardEnabled="True"
+                        IsNextTrackButtonVisible="True"
+                        IsFastRewindButtonVisible="True"
+                        IsFastRewindEnabled="True"
+                        />
+                </MediaPlayerElement.TransportControls>
+            </MediaPlayerElement>
+        </StackPanel>
     </Grid>
 </Page>

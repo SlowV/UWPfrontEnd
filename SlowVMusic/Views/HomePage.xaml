@@ -63,7 +63,7 @@
                     </ListView>
                 </ScrollViewer>
             </PivotItem>
-            <PivotItem Header="Upload">
+            <PivotItem Header="Upload" x:Name="itemUploadSong">
                 <ScrollViewer>
                     <StackPanel Margin="100,20">
                         <TextBox PlaceholderText="Nhập tên bài hát" Header="Tên bài hát" x:Name="Name"/>
@@ -81,34 +81,5 @@
                 </ScrollViewer>
             </PivotItem>
         </Pivot>
-        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Bottom"  Orientation="Horizontal" Background="#FFDEDEDE" Height="25" Margin="0,0,0,40" x:Name="NameSongPlaying">
-            <TextBlock>
-                Now Playing:
-            </TextBlock>
-            <TextBlock x:Name="NowPlaying" Margin="10,0,0,0">
-            </TextBlock>
-        </StackPanel>
-        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Bottom" Orientation="Horizontal" Background="#FFDEDEDE" Height="45" x:Name="ControlSongPlaying" >
-            <AppBarSeparator/>
-                <TextBlock x:Name="MinDuration"/>
-                <ProgressBar x:Name="Progress" Height="15" Width="230"></ProgressBar>
-            <TextBlock x:Name="MaxDuration"/>
-            <AppBarSeparator/>
-            <AppBarButton Icon="Previous" Click="PlayBack" ToolTipService.ToolTip="Previous Song"/>
-            <AppBarButton Icon="Play" Click="PlayClick" ToolTipService.ToolTip="Play/Pause Song" x:Name="PlayButton"/>
-            <AppBarButton Icon="Next" Click="PlayNext" ToolTipService.ToolTip="Next Song"/>
-            <AppBarButton Icon="RepeatOne" Click="Repeat" ToolTipService.ToolTip="Reapeat One"/>
-            <AppBarSeparator/>
-            <Slider x:Name="VolumeSlider" Width="110" HorizontalAlignment="Center" VerticalAlignment="Center" Height="30" ValueChanged="VolumeSlider_ValueChanged" ToolTipService.ToolTip="Volume"/>
-            <TextBlock x:Name="volume" Width="28" Height="20" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0" TextAlignment="Right">
-                100
-            </TextBlock>
-            <TextBlock Width="13" Height="20">
-                %
-            </TextBlock>
-            <AppBarSeparator/>
-        </StackPanel>
-        <MediaElement Width="550" x:Name="MediaPlayer">
-        </MediaElement>
     </Grid>
 </Page>
